@@ -1,0 +1,10 @@
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Dotnetlite.dll.config
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Dotnetlite.dll
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Dotnetlite.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Amqp.Net.dll
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\NDesk.Options.dll
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Amqp.Net.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\bin\Debug\Amqp.Net.xml
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\obj\Debug\Dotnetlite.dll
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\obj\Debug\Dotnetlite.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\dotnetlite\obj\Debug\DotNetLite.csprojResolveAssemblyReference.cache

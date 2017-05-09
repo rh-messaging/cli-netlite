@@ -1,0 +1,12 @@
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Receiver.exe.config
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Receiver.exe
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Receiver.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Amqp.Net.dll
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\NDesk.Options.dll
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Amqp.Net.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Amqp.Net.xml
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\obj\Debug\Receiver.csprojResolveAssemblyReference.cache
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\obj\Debug\Receiver.exe
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\obj\Debug\Receiver.pdb
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Dotnetlite.dll
+C:\VS_project\dtestsNetLite\dotnetlite\Receiver\bin\Debug\Dotnetlite.pdb

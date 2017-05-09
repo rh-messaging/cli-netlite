@@ -1,0 +1,444 @@
+
+// Aac2_sender/receiver/connector.cs
+// common and specific option parsers
+
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using Amqp.Types;
+using Amqp.Framing;
+using NDesk.Options;
+
+namespace Dotnetlite
+{
+    /// <summary>
+    /// Abstract class for parse help option
+    /// </summary>
+    public abstract class Options : OptionSet
+    {
+        protected readonly int _toSecConstant = 1000;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Options()
+        {
+            this.Add("h|help", "show this message",
+                v => {
+                    this.PrintHelp();
+                    Environment.Exit(0);
+                });
+        }
+
+        /// <summary>
+        /// Public method for print help usage
+        /// </summary>
+        public void PrintHelp()
+        {
+            Console.WriteLine("<type_of_client> [opts]");
+            this.WriteOptionDescriptions(Console.Out);
+        }
+    }
+
+    /// <summary>
+    /// Abstract slacc for store connection options fol clients
+    /// </summary>
+    public abstract class ConnectionOptions : Options
+    {
+        //Properties
+        private string amqpPrefix = "amqp://";
+        public string Url { get; protected set; }
+        public int Heartbeat { get; protected set; }
+        public string AuthMech { get; protected set; }
+        public int FrameSize { get; private set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ConnectionOptions() : base()
+        {
+            //default values
+            this.Url = "amqp://127.0.0.1:5672";
+            this.Heartbeat = -1;
+            this.AuthMech = String.Empty;
+            this.FrameSize = -1;
+
+            //add options
+            this.Add("b|broker=", "-b VALUE, --broker-url VALUE  url of broker to connect to (default amqp://127.0.0.1:5672)",
+                (string url) => { this.Url = this.amqpPrefix + url; });
+            this.Add("conn-heartbeat=", "time in s to delay between heatbeat packet",
+                (int heatbeat) => { this.Heartbeat = heatbeat * this._toSecConstant; });
+            this.Add("conn-auth-mechanisms=", "VALUE  SASL mechanisms; currently supported PLAIN | GSSAPI | EXTERNAL",
+                (string authMech) => { this.AuthMech = authMech; });
+            this.Add("conn-max-frame-size=", "Set connection max frame size",
+                (int frameSize) => { this.FrameSize = frameSize; });
+        }
+    }
+
+    /// <summary>
+    /// Abstract class for store link options for clients
+    /// </summary>
+    public abstract class LinkOptions : ConnectionOptions
+    {
+        //properties
+        public SettlementMode Settlement { get; protected set; }
+        public string Address { get; protected set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public LinkOptions() : base()
+        {
+            //default values
+            this.Settlement = SettlementMode.AtLeastOnce;
+
+            //add options
+            this.Add("link-at-most-once", "Sets 0-ack fire-and-forget delivery",
+                v => { this.Settlement = SettlementMode.AtMostOnce; });
+            this.Add("link-at-least-once", "Sets 1-ack reliable delivery",
+                v => { this.Settlement = SettlementMode.AtLeastOnce; });
+            this.Add("link-exactly-once", "Sets 2-ack reliable delivery",
+                v => { this.Settlement = SettlementMode.ExactlyOnce; });
+            this.Add("a|address=", "queue/exchange name",
+                (string address) => { this.Address = address; });
+        }
+    }
+
+    /// <summary>
+    /// Abstract class for store toegether options for all clients
+    /// </summary>
+    public abstract class BasicOptions : LinkOptions
+    {
+        //Properties
+        public int MsgCount { get; protected set; }
+        public int CloseSleep { get; protected set; }
+        public string SyncMode { get; protected set; }
+        public int Timeout { get; protected set; }
+        public string LogMsgs { get; protected set; }
+        public string LogStats { get; protected set; }
+        public string LogLib { get; protected set; }
+
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public BasicOptions() : base()
+        {
+            //default values
+            this.MsgCount = 1;
+            this.CloseSleep = 0;
+            this.SyncMode = "none";
+            this.Timeout = 1 * this._toSecConstant;
+            this.LogMsgs = "upstream";
+            this.LogStats = String.Empty;
+            this.LogLib = String.Empty;
+
+            //add options
+            this.Add("c|count=", "count of messages to send, receive or count of connections (default 1)",
+                (int count) => { this.MsgCount = count; });
+            this.Add("close-sleep=", "sleep before end of client",
+                (int closeSleep) => { this.CloseSleep = closeSleep * this._toSecConstant; });
+            this.Add("sync-mode=", "sync action",
+                (string syncMode) => { this.SyncMode = syncMode; });
+            this.Add("t|timeout=", "timeout",
+                (int timeout) => { this.Timeout = timeout * this._toSecConstant; });
+            this.Add("log-msgs=", "log messages output [dict|body|upstream|interop]",
+                (string logMsgs) => { this.LogMsgs = logMsgs; });
+            this.Add("log-stats=", "report various statistic/debug information [endpoint]",
+                (string logStats) => { this.LogStats = logStats; });
+            this.Add("log-lib=", "client logging library level [TRANSPORT_FRM]",
+                (string logLib) => { this.LogLib = logLib; });
+        }
+    }
+
+    /// <summary>
+    /// Abstract class for store sender and receiver toegether options
+    /// </summary>
+    public abstract class SenderReceiverOptions : BasicOptions
+    {
+        //Properties
+        public int Duration { get; protected set; }
+        public string DurationMode { get; protected set; }
+        public int TxSize { get; protected set; }
+        public string TxAction { get; protected set; }
+        public string TxLoopendAction { get; protected set; }
+        public int Capacity { get; private set; }
+
+        public SenderReceiverOptions() : base()
+        {
+            this.Duration = 0;
+            this.DurationMode = "before-send";
+            this.TxSize = -1;
+            this.TxAction = "commit";
+            this.TxLoopendAction = String.Empty;
+            this.Capacity = -1;
+
+            this.Add("duration=", "message actions total duration",
+                (int duration) => { this.Duration = duration; });
+            this.Add("duration-mode=", "specifies where to wait; following values are supported: before-receive, after-receive-before-tx-action,after-receive-after-tx-action",
+                (string logLib) => { this.LogLib = logLib; });
+            this.Add("tx-size=", "transactional mode: batch message count size negative skips tx-action before exit",
+                (int txSize) => { this.TxSize = txSize; });
+            this.Add("tx-action=", "transactional action at the end of tx batch (commit, rollback, none)",
+                (string txAction) => { this.TxAction = txAction; });
+            this.Add("tx-endloop-action=", "transactional action at the end message processing loop",
+                (string txEndloopAction) => { this.TxLoopendAction = txEndloopAction; });
+            this.Add("capacity=", "set link's capacity",
+                (int capacity) => { this.Capacity = capacity; });
+
+        }
+
+    }
+
+    /// <summary>
+    /// Class for parse sender client options
+    /// </summary>
+    public class SenderOptions : SenderReceiverOptions
+    {
+        // properties
+        public string Id { get; private set; }
+        public string ReplyTo { get; private set; }
+        public string Subject { get; private set; }
+        public bool Durable { get; private set; }
+        public uint Ttl { get; private set; }
+        public byte Priority { get; private set; }
+        public string CorrelationId { get; private set; }
+        public byte[] UserId { get; private set; }
+        public string MsgContentType { get; private set; }
+        public string Content { get; private set; }
+        public string ContentFromFile { get; private set; }
+        public string ContentType { get; private set; }
+        public string PropertyType { get; private set; }
+        public string GroupId { get; private set; }
+        public int GroupSequence { get; private set; }
+        public string ReplyToGroupId { get; private set; }
+
+        public Dictionary<string, object> Properties { get; set; }
+        public List ListContent { get; private set; }
+        public Map MapContent { get; set; }
+        public MessageAnnotations MessageAnnotations { get; set; }
+
+        /// <summary>
+        /// Read text from file
+        /// </summary>
+        /// <param name="filePath">string file path with name and extension of file</param>
+        /// <returns>string text from file</returns>
+        private static String ReadInputFile(string filePath)
+        {
+            string text = String.Empty;
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                text = reader.ReadToEnd();
+            }
+            return text;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public SenderOptions() : base()
+        {
+            //default values
+            this.Id = String.Empty;
+            this.ReplyTo = String.Empty;
+            this.Subject = String.Empty;
+            this.Durable = false;
+            this.Ttl = 0;
+            this.Priority = 0;
+            this.CorrelationId = String.Empty;
+            this.UserId = null;
+            this.MsgContentType = String.Empty;
+            this.Content = String.Empty;
+            this.ContentFromFile = String.Empty;
+            this.ContentType = "string";
+            this.PropertyType = "string";
+            this.GroupSequence = 0;
+
+            this.Properties = new Dictionary<string, object>();
+            this.ListContent = new List();
+            this.MapContent = new Map();
+            this.MessageAnnotations = new MessageAnnotations();
+
+            //add options
+            this.Add("msg-id=", "use the supplied id instead of generating one",
+                (string id) => { this.Id = id; });
+            this.Add("msg-reply-to=", "specify reply-to address",
+                (string replyTo) => { this.ReplyTo = replyTo; });
+            this.Add("msg-subject=", "specify reply-to subject",
+                (string subject) => { this.Subject = subject; });
+            this.Add("msg-property=", "specify reply-to property",
+                (string property) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = property.Split(delimiters);
+                    int valueIndex = pair.Length == 2 ? 1 : 2;
+                    if (pair.Length == 2 || pair.Length == 3)
+                    {
+                        double doubleVal;
+                        int intVal;
+                        bool boolVal;
+                        if (int.TryParse(pair[valueIndex], out intVal))
+                        {
+                            this.Properties.Add(pair[0], intVal);
+                        }
+                        else if (double.TryParse(pair[valueIndex], out doubleVal))
+                        {
+                            this.Properties.Add(pair[0], doubleVal);
+                        }
+                        else if (Boolean.TryParse(pair[valueIndex], out boolVal))
+                        {
+                            this.Properties.Add(pair[0], boolVal);
+                        }
+                        else
+                        {
+                            this.Properties.Add(pair[0], pair[valueIndex]);
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
+            this.Add("property-type=", "specify message property type (overrides auto-cast feature)",
+                (string propertyType) => { this.PropertyType = propertyType; });
+            this.Add("msg-durable=", "send durable messages yes/no",
+                (string durable) => {
+                    if (((durable == "yes") || (durable == "true")) || (durable == "True"))
+                        this.Durable = true;
+                    else if (((durable == "no") || (durable == "false")) || (durable == "False"))
+                        this.Durable = false;
+                    else
+                        throw new ArgumentException();
+                });
+            this.Add("msg-ttl=", "message time-to-live (ms)",
+                (uint ttl) => { this.Ttl = ttl; });
+            this.Add("msg-priority=", "message priority",
+                (byte priority) => { this.Priority = priority; });
+            this.Add("msg-correlation-id=", "message correlation id",
+                (string correlationId) => { this.CorrelationId = correlationId; });
+            this.Add("msg-user-id=", "message user id",
+                (string userId) => {
+                    char[] uid = userId.ToCharArray();
+                    List<byte> uidl = new List<byte>();
+                    foreach (char c in uid)
+                    {
+                        uidl.Add((byte)c);
+                    }
+                    this.UserId = uidl.ToArray();
+                });
+            this.Add("msg-group-id=", "amqp message group id",
+                (string groupId) => { this.GroupId = groupId; });
+            this.Add("msg-group-seq=", "amqp message group sequence",
+                (int groupSequence) => { this.GroupSequence = groupSequence; });
+            this.Add("msg-reply-to-group-id=", "amqp message reply to group id",
+                (string replyToGroupId) => { this.ReplyToGroupId = replyToGroupId; });
+            this.Add("msg-content-type=", "message content type; values string, int, long, float",
+                (string contentType) => { this.ContentType = contentType; });
+            this.Add("msg-content=", "specify a content",
+                (string content) => { this.Content = content; });
+            this.Add("L|msg-content-list-item=", "specify a multiple entries content",
+                (string listItem) => {
+                    this.ListContent.Add(listItem);
+                });
+            this.Add("M|msg-content-map-item=", "KEY=VALUE specify a map content",
+                (string mapItem) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = mapItem.Split(delimiters);
+                    if (pair.Length == 2)
+                    {
+                        this.MapContent.Add(pair[0], pair[1]);
+                    }
+                    else if (pair.Length == 3)
+                    {
+                        this.MapContent.Add(pair[0], pair[2]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
+            this.Add("msg-content-from-file=", "specify file name to load the content from",
+                (string path) => { this.ContentFromFile = ReadInputFile(path); });
+            this.Add("msg-annotation=", "specify amqp properties",
+                (string annotation) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = annotation.Split(delimiters);
+                    if (pair.Length == 2)
+                    {
+                        double doubleVal;
+                        bool boolVal;
+                        if (double.TryParse(pair[1], out doubleVal))
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = doubleVal;
+                        }
+                        else if (Boolean.TryParse(pair[1], out boolVal))
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = boolVal;
+                        }
+                        else
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = pair[1];
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
+        }
+    }
+
+    /// <summary>
+    /// Class for parse receiver client options
+    /// </summary>
+    public class ReceiverOptions : SenderReceiverOptions
+    {
+        //properties
+        public string Action { get; private set; }
+        public bool RecvBrowse { get; private set; }
+        public string MsgSelector { get; private set; }
+        public bool ProccessReplyTo { get; private set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ReceiverOptions() : base()
+        {
+            //default values
+            this.Action = String.Empty;
+
+            //add options
+            this.Add("action=", "action on acquired message [accept, release, reject]",
+                (string action) => { this.Action = action; });
+            this.Add("recv-browse=", "get all messages from queue without delete",
+                (bool recvBrowse) => { this.RecvBrowse = recvBrowse; });
+            this.Add("recv-selector=|msg-selector=", "get all messages on specific filter",
+                (string recvSelector) => { this.MsgSelector = recvSelector; });
+            this.Add("process-reply-to", "reply on reply_on address",
+                (v) => { this.ProccessReplyTo = true; });
+        }
+    }
+
+    /// <summary>
+    /// Class for parse connector client options
+    /// </summary>
+    public class ConnectorOptions : BasicOptions
+    {
+        //properties
+        public string ObjCtrl { get; private set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ConnectorOptions() : base()
+        {
+            //default values
+            this.ObjCtrl = "C";
+
+            //add options
+            this.Add("obj-ctrl=", "Optional creation object control based on <object-ids>",
+                (string ctrl) => { this.ObjCtrl = ctrl; });
+        }
+    }
+}
