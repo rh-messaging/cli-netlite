@@ -35,8 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Amqp.Net">
-      <HintPath>..\..\..\..\jamq\rh-amqpnetlite\bin\Debug\Amqp.Net\Amqp.Net.dll</HintPath>
+    <Reference Include="Amqp.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=905a7b1e6458e0c3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dlls\Amqp.Net.dll</HintPath>
     </Reference>
     <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -66,6 +67,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dlls\Amqp.Net.dll" />
     <Content Include="dlls\NDesk.Options.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
