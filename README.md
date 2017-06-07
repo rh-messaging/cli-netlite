@@ -9,12 +9,25 @@
 
 1. Summary of set up
     * Clone repo on Windows system (ws2012r2, ws2012, win 8.1, win 10)
-    * Download `Amqp.Net.dll` or clone [AMQP.NET lite library](https://github.com/Azure/amqpnetlite) and build `Amqp.Net.dll` with .net 4.5
-    * Copy `Amqp.Net.dll` to `<project-folder>\dotnetlite\dlls` folder
-    * Open `DotNetLiteClient.sln` in Visual Studio and build it, or build using msbuild.exe in cmd
+    * Open `cli-netlite.sln` in Visual Studio and build it, or build using msbuild.exe in cmd
 
 2. Dependencies
-    * This client depends on .net 4.5 and Amqp.Net.Dll
+    * This client depends on .net 4.5 and nuget packages of AMQPNetlite and NDesk.Options type `nuget restore` to download packages
 
-### Contributors ###
-* David Kornel <david.kornel@outook.com>
+### Using
+
+Using cmd client
+
+```cmd
+> cli-netlite-sender.exe --broker "username:password@localhost:5672" --address "queue_test" --count 2 --msg-content "text message" --log-msgs dict
+> cli-netlite-receiver.exe --broker "username:password@localhost:5672" --address "queue_test" --count 2 --log-msgs dict
+```
+
+Contributors
+----
+* David Kornel <david.kornel@outook.com>, <dkornel@redhat.com>
+
+License
+----
+
+Apache v2
