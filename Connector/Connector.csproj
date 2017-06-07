@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Connector</RootNamespace>
-    <AssemblyName>Connector</AssemblyName>
+    <AssemblyName>cli-netlite-connector</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,9 +49,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotnetlite\DotNetLite.csproj">
+    <ProjectReference Include="..\ClientLib\ClientLib.csproj">
       <Project>{6dc6d0f4-85f4-4380-9c49-ff26bc83d000}</Project>
-      <Name>DotNetLite</Name>
+      <Name>ClientLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

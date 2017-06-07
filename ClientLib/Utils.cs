@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Amqp.Framing;
 
-namespace Dotnetlite
+namespace ClientLib
 {
     public static class ReturnCode
     {

@@ -6,7 +6,7 @@ using System.Text;
 using Amqp;
 using Amqp.Types;
 
-namespace Dotnetlite
+namespace ClientLib
 {
     /// <summary>
     /// Class for formating message to text output

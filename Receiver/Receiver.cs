@@ -15,7 +15,7 @@
 //  limitations under the License.
 //  ------------------------------------------------------------------------------------
 
-using Dotnetlite;
+using ClientLib;
 
 namespace Receiver
 { 

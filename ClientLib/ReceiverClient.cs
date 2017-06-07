@@ -24,7 +24,7 @@ using Amqp;
 using Amqp.Framing;
 using Amqp.Types;
 
-namespace Dotnetlite
+namespace ClientLib
 { 
     /// <summary>
     /// Class represent receiver from amqp broker

@@ -11,7 +11,7 @@ using Amqp.Types;
 using Amqp.Framing;
 using NDesk.Options;
 
-namespace Dotnetlite
+namespace ClientLib
 {
     /// <summary>
     /// Abstract class for parse help option

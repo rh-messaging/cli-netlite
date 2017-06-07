@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Amqp;
 using Amqp.Framing;
 
-namespace Dotnetlite
+namespace ClientLib
 {
     /// <summary>
     /// Represent together properties of sender and receiver

@@ -1,0 +1,13 @@
+Sender/bin/
+Sender/obj/
+Receiver/bin/
+Receiver/obj/
+Connector/bin/
+Connector/obj/
+
+ClientLib/bin/
+ClientLib/obj/
+ClientUnitTests/bin/
+ClientUnitTests/obj/
+.vs
+packages/

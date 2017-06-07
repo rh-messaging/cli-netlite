@@ -23,7 +23,7 @@ using System.Transactions;
 using Amqp;
 using Amqp.Framing;
 
-namespace Dotnetlite
+namespace ClientLib
 {
     /// <summary>
     /// Class represent sender to amqp broker
