@@ -105,6 +105,7 @@ namespace ClientLib
         {
             //default values
             this.Settlement = SettlementMode.AtLeastOnce;
+            this.Address = "examples";
 
             //add options
             this.Add("link-at-most-once", "Sets 0-ack fire-and-forget delivery",

@@ -15,9 +15,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -25,14 +23,21 @@ using Amqp;
 
 namespace ClientLib
 {
+    /// <summary>
+    /// Connector client class
+    /// </summary>
     public class ConnectorClient : CoreClient
     {
+        /// <summary>
+        /// Method for run connector
+        /// </summary>
+        /// <param name="args">cmd line arguments</param>
         public void Run(string[] args)
         {
-            Collection<Connection> con_list = new Collection<Connection>();
-            Collection<Session> ssn_list = new Collection<Session>();
-            Collection<SenderLink> snd_list = new Collection<SenderLink>();
-            Collection<ReceiverLink> rcv_list = new Collection<ReceiverLink>();
+            Collection<Connection> connections = new Collection<Connection>();
+            Collection<Session> sessions = new Collection<Session>();
+            Collection<SenderLink> senders = new Collection<SenderLink>();
+            Collection<ReceiverLink> receivers = new Collection<ReceiverLink>();
 
             ConnectorOptions options = new ConnectorOptions();
 
@@ -47,8 +52,7 @@ namespace ClientLib
 
                     for (int i = 0; i < options.MsgCount; i++)
                     {
-                        Connection tmp_con = new Connection(new Address(options.Url));
-                        con_list.Add(tmp_con);
+                        connections.Add(new Connection(new Address(options.Url)));
                     }
                 }
 
@@ -57,65 +61,45 @@ namespace ClientLib
                 {
                     try
                     {
-                        foreach (Connection conn in con_list)
+                        foreach (Connection conn in connections)
                         {
-                            //if connection is opened
-                            Session s = new Session(conn);
-                            ssn_list.Add(s);
-                            //if (options.syncMode == "action")
-                            //s.Sync();
-                            //else ssn_list.Add(null);
+                            sessions.Add(new Session(conn));
                         }
                     }
                     catch (AmqpException ae)
                     {
                         Console.Error.WriteLine(ae.Message);
-                        for (int i = ssn_list.Count; i < con_list.Count; i++)
+                        for (int i = sessions.Count; i < connections.Count; i++)
                         {
-                            ssn_list.Add(null);
+                            sessions.Add(null);
                             Environment.Exit(ReturnCode.ERROR_OTHER);
                         }
                     }
 
-                    // further object require non-empty address
-                    string address = "jms.queue.connection_tests";
-                    //address = options.Address  ???
+                    string address = options.Address;
 
-                    //not working currently
                     if (address != String.Empty)
                     {
-                        // sender part (if address is specified)
-                        // create senders for opened sessions
                         if (Regex.IsMatch(options.ObjCtrl, "[S]"))
                         {
                             try
                             {
                                 int i = 0;
-                                foreach (Session s in ssn_list)
+                                foreach (Session s in sessions)
                                 {
                                     i++;
                                     if (s != null)
-                                    {
-                                        SenderLink snd = new SenderLink(s, "tmp_s" + i.ToString(), address);
-                                        snd_list.Add(snd);
-                                        //TODO
-                                        if (options.SyncMode == "action")
-                                        {
-                                            //s.Sync();
-                                        }
-                                    }
+                                        senders.Add(new SenderLink(s, "sender" + i.ToString(), address));
                                     else
-                                    {
-                                        snd_list.Add(null);
-                                    }
+                                        senders.Add(null);
                                 }
                             }
                             catch (AmqpException ae)
                             {
                                 Console.Error.WriteLine(ae.Message);
-                                for (int i = snd_list.Count; i < ssn_list.Count; i++)
+                                for (int i = senders.Count; i < sessions.Count; i++)
                                 {
-                                    snd_list.Add(null);
+                                    senders.Add(null);
                                 }
                                 Environment.Exit(ReturnCode.ERROR_OTHER);
                             }
@@ -125,30 +109,21 @@ namespace ClientLib
                             try
                             {
                                 int i = 0;
-                                foreach (Session s in ssn_list)
+                                foreach (Session s in sessions)
                                 {
                                     i++;
                                     if (s != null)
-                                    {
-                                        ReceiverLink rcv = new ReceiverLink(s, "tmp_rcv" + i.ToString(), address);
-                                        rcv_list.Add(rcv);
-                                        if (options.SyncMode == "action")
-                                        {
-                                            //s.Sync();
-                                        }
-                                    }
+                                        receivers.Add(new ReceiverLink(s, "tmp_rcv" + i.ToString(), address));
                                     else
-                                    {
-                                        rcv_list.Add(null);
-                                    }
+                                        receivers.Add(null);
                                 }
                             }
                             catch (AmqpException ae)
                             {
                                 Console.Error.WriteLine(ae.Message);
-                                for (int i = rcv_list.Count; i < ssn_list.Count; i++)
+                                for (int i = receivers.Count; i < sessions.Count; i++)
                                 {
-                                    rcv_list.Add(null);
+                                    receivers.Add(null);
                                 }
                                 Environment.Exit(ReturnCode.ERROR_OTHER);
                             }
@@ -170,28 +145,28 @@ namespace ClientLib
                 if (options.CloseSleep > 0)
                     Thread.Sleep(options.CloseSleep);
 
-                foreach (ReceiverLink rec in rcv_list)
+                foreach (ReceiverLink rec in receivers)
                 {
                     if (rec != null)
                     {
                         rec.Close();
                     }
                 }
-                foreach (SenderLink sen in snd_list)
+                foreach (SenderLink sen in senders)
                 {
                     if (sen != null)
                     {
                         sen.Close();
                     }
                 }
-                foreach (Session ses in ssn_list)
+                foreach (Session ses in sessions)
                 {
                     if (ses != null)
                     {
                         ses.Close();
                     }
                 }
-                foreach (Connection c in con_list)
+                foreach (Connection c in connections)
                 {
                     if (c != null)
                     {
