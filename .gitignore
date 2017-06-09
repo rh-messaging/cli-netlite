@@ -8,6 +8,8 @@ ClientLib/bin/
 ClientLib/obj/
 ClientUnitTests/bin/
 ClientUnitTests/obj/
+CliNetliteInstaller/bin/
+CliNetliteInstaller/obj/
 .vs/
 .vscode/
 packages/

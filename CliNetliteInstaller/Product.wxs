@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="712c71fd-c6f1-41a6-a634-b6d0a8769002"
+           Name="cli-netlite"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="David Kornel"
+           UpgradeCode="a580c04f-caec-4e18-9134-c4b8f1c8f1be">
+    
+    
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Media Id="1" Cabinet="clinetlite.cab" EmbedCab="yes" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+
+		<Feature Id="ProductFeature" Title="cli-netlite" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="CliNetlite" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="SenderExe" Guid="36195613-0263-44f0-ac1a-0d3e33a5ed1d">
+        <File Id="SenderExecutable" Source="..\Sender\bin\Debug\cli-netlite-sender.exe" KeyPath="yes" Vital="yes" System="yes"/>
+      </Component>
+      <Component Id="ReceiverExe" Guid="4ec83438-b3a8-4955-ba9b-a003efdd5ee1">
+        <File Id="ReceiverExecutable" Source="..\Receiver\bin\Debug\cli-netlite-receiver.exe" KeyPath="yes" Vital="yes" System="yes"/>
+      </Component>
+      <Component Id="ConnectorExe" Guid="b146d03d-7942-4fd3-bdc4-245c25a95e4b">
+        <File Id="ConnectorExecutable" Source="..\Connector\bin\Debug\cli-netlite-connector.exe" KeyPath="yes" Vital="yes" System="yes"/>
+      </Component>
+      <Component Id="ClientLib.dll">
+        <File Id="ClientLib.dll" Source="..\ClientLib\bin\Debug\ClientLib.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Amqp.Net.dll">
+        <File Id="Amqp.Net.dll" Source="..\ClientLib\bin\Debug\Amqp.Net.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NDesk.Options.dll">
+        <File Id="NDesk.Options.dll" Source="..\ClientLib\bin\Debug\NDesk.Options.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+
+  <Fragment>
+    <Feature Id="MainApplication" Title="Main Application" Level="1">
+      <ComponentRef Id="ClientLib.dll" />
+      <ComponentRef Id="Amqp.Net.dll" />
+      <ComponentRef Id="NDesk.Options.dll" />
+      <ComponentRef Id="SenderExe" />
+      <ComponentRef Id="ReceiverExe" />
+      <ComponentRef Id="ConnectorExe"/>
+    </Feature>
+  </Fragment>
+</Wix>
