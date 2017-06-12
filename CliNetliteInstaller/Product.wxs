@@ -22,7 +22,7 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="CliNetlite" />
+        <Directory Id="INSTALLFOLDER" Name="CliNetlite"/>
 			</Directory>
 		</Directory>
 	</Fragment>
@@ -47,10 +47,14 @@
       <Component Id="NDesk.Options.dll">
         <File Id="NDesk.Options.dll" Source="..\ClientLib\bin\Debug\NDesk.Options.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="SetEnvPath"
+                     Guid="{016cb18d-0357-425b-90a8-caf1826ddee6}">
+        <CreateFolder />
+        <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      </Component>
     </ComponentGroup>
   </Fragment>
-
-
+  
   <Fragment>
     <Feature Id="MainApplication" Title="Main Application" Level="1">
       <ComponentRef Id="ClientLib.dll" />
