@@ -7,12 +7,16 @@
            Manufacturer="David Kornel"
            UpgradeCode="a580c04f-caec-4e18-9134-c4b8f1c8f1be">
     
-    
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <Media Id="1" Cabinet="clinetlite.cab" EmbedCab="yes" />
 
+    <WixVariable Id="WixUILicenseRtf" Value="/LICENSE.rtf" />
+
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
+    <UI>
+      <UIRef Id="Custom_WixUI_Minimal"/>
+    </UI>
 
 		<Feature Id="ProductFeature" Title="cli-netlite" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
