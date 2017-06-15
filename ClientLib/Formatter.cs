@@ -206,7 +206,7 @@ namespace ClientLib
         /// <returns>string</returns>
         public static string FormatByteArray(byte[] inData)
         {
-            return System.Text.Encoding.Default.GetString(inData);
+            return FormatString(System.Text.Encoding.Default.GetString(inData));
         }
 
         /// <summary>
