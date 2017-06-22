@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>f13fb7ef-d892-4229-a1eb-8b595d71d64e</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>cli-netlite-1.1.0.0</OutputName>
+    <OutputName>cli-netlite-1.1.0.1</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
