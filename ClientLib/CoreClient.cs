@@ -60,7 +60,7 @@ namespace ClientLib
                 {
                     typeArguments.PrintHelp();
                     foreach (var item in unrecognized)
-                        Console.WriteLine("unrecognized option: {0}", item);
+                        Console.WriteLine("ERROR: {{ 'cause': {0}}}", item);
                     Environment.Exit(ReturnCode.ERROR_ARG);
                 }
             }
@@ -172,7 +172,7 @@ namespace ClientLib
         /// <param name="options">parsed options</param>
         protected void OtherExceptionHandler(Exception ex, Options options)
         {
-            Console.Error.WriteLine("Exception: {0}.", ex);
+            Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", ex.Message.ToString());
 
             if (options is SenderOptions || options is ReceiverOptions)
             {
@@ -194,7 +194,7 @@ namespace ClientLib
         /// <param name="e">exception</param>
         void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs ex)
         {
-            Console.Error.WriteLine("Exception: {0}.", ex);
+            Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", ex.ToString());
             Environment.Exit(ReturnCode.ERROR_OTHER);
         }
         #endregion
