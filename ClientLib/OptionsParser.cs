@@ -412,6 +412,8 @@ namespace ClientLib
         public bool RecvBrowse { get; private set; }
         public string MsgSelector { get; private set; }
         public bool ProccessReplyTo { get; private set; }
+        public bool RecvListener { get; private set; }
+        public int RecvListenerPort { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -420,6 +422,7 @@ namespace ClientLib
         {
             //default values
             this.Action = String.Empty;
+            this.RecvListenerPort = 5672;
 
             //add options
             this.Add("action=", "action on acquired message [accept, release, reject]",
@@ -430,6 +433,10 @@ namespace ClientLib
                 (string recvSelector) => { this.MsgSelector = recvSelector; });
             this.Add("process-reply-to", "reply on reply_on address",
                 (v) => { this.ProccessReplyTo = true; });
+            this.Add("recv-listen=", "enable receiver as listener [true, false]",
+                (bool recvListen) => { this.RecvListener = recvListen; });
+            this.Add("recv-listen-port=", "port for p2p",
+                (int port) => { this.RecvListenerPort = port; });
         }
     }
 

@@ -15,13 +15,12 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Transactions;
 using Amqp;
 using Amqp.Framing;
 using Amqp.Types;
+using System.Threading.Tasks;
+using Amqp.Listener;
 
 namespace ClientLib
 { 
@@ -38,40 +37,55 @@ namespace ClientLib
         /// <returns>build receiver link</returns>
         private ReceiverLink PeprareReceiverLink(ReceiverOptions options)
         {
-            Source recvSource = new Source();
-            recvSource.Address = options.Address;
-
+            Source recvSource = new Source()
+            {
+                Address = options.Address
+            };
             if (options.RecvBrowse)
                 recvSource.DistributionMode = new Symbol("copy");
 
             //source
             if (!string.IsNullOrEmpty(options.MsgSelector))
             {
-                Map filters = new Map();
-                filters.Add(new Symbol("filter"),
-                            new DescribedValue(
+                Map filters = new Map
+                {
+                    {
+                        new Symbol("filter"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:float"),
-                                options.MsgSelector));
-                filters.Add(new Symbol("filter1"),
-                            new DescribedValue(
+                                options.MsgSelector)
+                    },
+                    {
+                        new Symbol("filter1"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:string"),
-                                options.MsgSelector));
-                filters.Add(new Symbol("filter2"),
-                            new DescribedValue(
+                                options.MsgSelector)
+                    },
+                    {
+                        new Symbol("filter2"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:int"),
-                                options.MsgSelector));
-                filters.Add(new Symbol("filter3"),
-                            new DescribedValue(
+                                options.MsgSelector)
+                    },
+                    {
+                        new Symbol("filter3"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:boolean"),
-                                options.MsgSelector));
-                filters.Add(new Symbol("filter4"),
-                            new DescribedValue(
+                                options.MsgSelector)
+                    },
+                    {
+                        new Symbol("filter4"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:list"),
-                                options.MsgSelector));
-                filters.Add(new Symbol("filter5"),
-                            new DescribedValue(
+                                options.MsgSelector)
+                    },
+                    {
+                        new Symbol("filter5"),
+                        new DescribedValue(
                                 new Symbol("apache.org:selector-filter:map"),
-                                options.MsgSelector));
+                                options.MsgSelector)
+                    }
+                };
                 recvSource.FilterSet = filters;
             }
             Attach attach = new Attach()
@@ -84,6 +98,83 @@ namespace ClientLib
 
             return new ReceiverLink(session, "Aac2receiver", attach, (l, a) => { });
         }
+        #endregion
+
+        #region Listener methods
+        /// <summary>
+        /// Method for init container listener
+        /// </summary>
+        /// <param name="options">receiver options</param>
+        private void InitListener(ReceiverOptions options)
+        {
+            this.CreateContainerHost(options);
+            this.containerHost.Open();
+            this.containerHost.RegisterMessageProcessor(options.Address, new MessageProcessor(options, this.containerHost));
+            System.Threading.Thread.Sleep(options.Timeout);
+        }
+
+        /// <summary>
+        /// Private class for handling requests on listener
+        /// </summary>
+        class MessageProcessor : IMessageProcessor
+        {
+            int received;
+            int count;
+            ReceiverOptions options;
+            ContainerHost host;
+
+            /// <summary>
+            /// Constructor of MessageProcessor
+            /// </summary>
+            /// <param name="options">receiver options</param>
+            /// <param name="host">container host listener</param>
+            public MessageProcessor(ReceiverOptions options, ContainerHost host)
+            {
+                this.received = 0;
+                this.options = options;
+                this.count = options.MsgCount;
+                this.host = host;
+            }
+
+            public int Credit { get { return options.Count; } }
+
+            /// <summary>
+            /// init of message processor
+            /// </summary>
+            /// <param name="messageContext">context of messsage</param>
+            public void Process(MessageContext messageContext)
+            {
+                var task = this.ReplyAsync(messageContext);
+            }
+
+            /// <summary>
+            /// Async tassk for handling requst
+            /// </summary>
+            /// <param name="messageContext">context of message</param>
+            /// <returns>async task</returns>
+            async Task ReplyAsync(MessageContext messageContext)
+            {
+                while (this.received < count)
+                {
+                    try
+                    {
+                        Message message = messageContext.Message;
+                        Formatter.LogMessage(message, options);
+                        this.received++;
+                        messageContext.Complete();
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", exception.Message);
+                        break;
+                    }
+
+                    await Task.Delay(500);
+                }
+                host.Close();
+            }
+        }
+
         #endregion
 
         #region Receive methods
@@ -208,61 +299,68 @@ namespace ClientLib
             {
                 this.ParseArguments(args, options);
 
-                //init timestamping
-                this.ptsdata = Utils.TsInit(options.LogStats);
-
-                Utils.TsSnapStore(this.ptsdata, 'B', options.LogStats);
-
-                this.SetAddress(options.Url);
-                this.CreateConnection(options);
-
-                Utils.TsSnapStore(this.ptsdata, 'C', options.LogStats);
-
-                this.CreateSession();
-
-                Utils.TsSnapStore(this.ptsdata, 'D', options.LogStats);
-
-                ReceiverLink receiver = this.PeprareReceiverLink(options);
-
-                Message message = new Message();
-
-                this.ts = Utils.GetTime();
-
-                Utils.TsSnapStore(this.ptsdata, 'E', options.LogStats);
-                int nReceived = 0;
-
-                if(options.Capacity > -1)
-                    receiver.SetCredit(options.Capacity);
-
-                bool tx_batch_flag = String.IsNullOrEmpty(options.TxLoopendAction) ? (options.TxSize > 0) : true;
-
-                //receiving of messages
-                if (options.RecvBrowse || !String.IsNullOrEmpty(options.MsgSelector))
-                    this.ReceiveAll(receiver, options);
+                if (options.RecvListener)
+                {
+                    this.InitListener(options);
+                }
                 else
                 {
-                    if (tx_batch_flag)
-                        this.TransactionReceive(receiver, options);
+                    //init timestamping
+                    this.ptsdata = Utils.TsInit(options.LogStats);
+
+                    Utils.TsSnapStore(this.ptsdata, 'B', options.LogStats);
+
+                    this.SetAddress(options.Url);
+                    this.CreateConnection(options);
+
+                    Utils.TsSnapStore(this.ptsdata, 'C', options.LogStats);
+
+                    this.CreateSession();
+
+                    Utils.TsSnapStore(this.ptsdata, 'D', options.LogStats);
+
+                    ReceiverLink receiver = this.PeprareReceiverLink(options);
+
+                    Message message = new Message();
+
+                    this.ts = Utils.GetTime();
+
+                    Utils.TsSnapStore(this.ptsdata, 'E', options.LogStats);
+                    int nReceived = 0;
+
+                    if (options.Capacity > -1)
+                        receiver.SetCredit(options.Capacity);
+
+                    bool tx_batch_flag = String.IsNullOrEmpty(options.TxLoopendAction) ? (options.TxSize > 0) : true;
+
+                    //receiving of messages
+                    if (options.RecvBrowse || !String.IsNullOrEmpty(options.MsgSelector))
+                        this.ReceiveAll(receiver, options);
                     else
-                        this.Receive(receiver, options);
-                }
+                    {
+                        if (tx_batch_flag)
+                            this.TransactionReceive(receiver, options);
+                        else
+                            this.Receive(receiver, options);
+                    }
 
-                if (options.CloseSleep > 0)
-                {
-                    System.Threading.Thread.Sleep(options.CloseSleep);
-                }
+                    if (options.CloseSleep > 0)
+                    {
+                        System.Threading.Thread.Sleep(options.CloseSleep);
+                    }
 
-                //close connection and link
-                this.CloseLink(receiver);
-                this.CloseConnection();
+                    //close connection and link
+                    this.CloseLink(receiver);
+                    this.CloseConnection();
 
-                Utils.TsSnapStore(this.ptsdata, 'G', options.LogStats);
+                    Utils.TsSnapStore(this.ptsdata, 'G', options.LogStats);
 
-                //report timestamping
-                if (this.ptsdata.Count > 0)
-                {
-                    Console.WriteLine("STATS " + Utils.TsReport(this.ptsdata,
-                        nReceived, message.Body.ToString().Length * sizeof(Char), 0));
+                    //report timestamping
+                    if (this.ptsdata.Count > 0)
+                    {
+                        Console.WriteLine("STATS " + Utils.TsReport(this.ptsdata,
+                            nReceived, message.Body.ToString().Length * sizeof(Char), 0));
+                    }
                 }
                 this.exitCode = ReturnCode.ERROR_SUCCESS;
             }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Amqp;
 using Amqp.Framing;
+using Amqp.Listener;
 
 namespace ClientLib
 {
@@ -33,6 +34,7 @@ namespace ClientLib
         protected Address address;
         protected Session session;
         protected Connection connection;
+        protected ContainerHost containerHost;
 
         /// <summary>
         /// Constructor of core class
@@ -102,14 +104,26 @@ namespace ClientLib
         /// </summary>
         protected void CreateConnection(ConnectionOptions options)
         {
-            Open open = new Open();
-            open.ContainerId = Guid.NewGuid().ToString();
+            Open open = new Open()
+            {
+                ContainerId = Guid.NewGuid().ToString()
+            };
             if (options.FrameSize > -1)
                 open.MaxFrameSize = (uint)options.FrameSize;
             if (options.Heartbeat > -1)
                 open.IdleTimeOut = (uint)options.Heartbeat;
 
             this.connection = new Connection(this.address, null, open, null);
+        }
+
+        /// <summary>
+        /// Method for create container listener
+        /// </summary>
+        /// <param name="options">receiver options</param>
+        protected void CreateContainerHost(ReceiverOptions options)
+        {
+            Uri addressUri = new Uri("amqp://localhost:" + options.RecvListenerPort);
+            this.containerHost = new ContainerHost(addressUri);
         }
 
         /// <summary>

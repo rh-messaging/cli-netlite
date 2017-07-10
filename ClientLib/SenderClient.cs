@@ -37,7 +37,6 @@ namespace ClientLib
         /// <returns>content</returns>
         static object CreateMsgContent(SenderOptions options, int indexOfMessage)
         {
-            //TODO set content type
             object content = String.Empty;
             if (!(String.IsNullOrEmpty(options.Content)))
                 content = options.Content;
@@ -59,10 +58,11 @@ namespace ClientLib
         static Message CreateMessage(SenderOptions options, int nSent)
         {
             object content = CreateMsgContent(options, nSent);
-            Message msg = new Message(content);
-
-            //msg properties            
-            msg.Properties = new Properties();
+            Message msg = new Message(content)
+            {
+                //msg properties
+                Properties = new Properties()
+            };
             if (!String.IsNullOrEmpty(options.Id))
                 msg.Properties.MessageId = options.Id;
             if (!String.IsNullOrEmpty(options.CorrelationId))
@@ -86,16 +86,17 @@ namespace ClientLib
                 msg.Properties.ReplyToGroupId = options.ReplyToGroupId;
 
             //set up message header
-            msg.Header = new Header();
-            msg.Header.Durable = options.Durable;
-            msg.Header.Priority = options.Priority;
+            msg.Header = new Header()
+            {
+                Durable = options.Durable,
+                Priority = options.Priority
+            };
             if (options.Ttl > 0)
                 msg.Header.Ttl = options.Ttl;
 
             //set up application properties
             if (options.Properties.Count > 0)
             {
-                //TODO - set up property type
                 msg.ApplicationProperties = new ApplicationProperties();
                 foreach (KeyValuePair<string, object> p in options.Properties)
                 {
