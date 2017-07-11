@@ -166,12 +166,13 @@ namespace ClientLib
                     catch (Exception exception)
                     {
                         Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", exception.Message);
-                        break;
+                        Environment.Exit(ReturnCode.ERROR_OTHER);
                     }
 
                     await Task.Delay(500);
                 }
                 host.Close();
+                Environment.Exit(ReturnCode.ERROR_SUCCESS);
             }
         }
 
