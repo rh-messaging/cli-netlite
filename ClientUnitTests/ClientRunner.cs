@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace ClientUnitTests
 {
@@ -37,8 +38,8 @@ namespace ClientUnitTests
         {
             return System.IO.Path.Combine(new String[] {
                 this.projectDir,
-                client + "\\bin\\Debug",
-                "cli-netlite-" + client + ".exe" });
+                client + "/bin/Debug",
+                "cli-netlite-" + client.ToLower() + ".exe" });
         }
 
         /// <summary>
@@ -53,11 +54,11 @@ namespace ClientUnitTests
 
             string client;
             if (type == ClientType.Sender)
-                client = "sender";
+                client = "Sender";
             else if (type == ClientType.Receiver)
-                client = "receiver";
+                client = "Receiver";
             else
-                client = "connector";
+                client = "Connector";
 
             p.StartInfo.FileName = this.getPath(client);
             Console.WriteLine(p.StartInfo.FileName);

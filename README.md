@@ -1,5 +1,5 @@
 # README #
-[![Build status](https://ci.appveyor.com/api/projects/status/6gdu7v5k09dgoosg/branch/master?svg=true)](https://ci.appveyor.com/project/dkornel/cli-netlite/branch/master)
+[![Build Status](https://travis-ci.org/rh-messaging/cli-netlite.svg?branch=master)](https://travis-ci.org/rh-messaging/cli-netlite)
 
 
 

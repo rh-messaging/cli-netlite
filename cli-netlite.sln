@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLib", "ClientLib\ClientLib.csproj", "{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}"
 EndProject
@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB591E27-1754-4F52-9995-E0236F1CB9C4}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.travis.yml = .travis.yml
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -34,6 +35,8 @@ Global
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
+		TravisCI|Any CPU = TravisCI|Any CPU
+		TravisCI|x86 = TravisCI|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,6 +47,10 @@ Global
 		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.Release|x86.ActiveCfg = Release|Any CPU
 		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.Release|x86.Build.0 = Release|Any CPU
+		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.TravisCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.TravisCI|Any CPU.Build.0 = Debug|Any CPU
+		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.TravisCI|x86.ActiveCfg = TravisCI|Any CPU
+		{6DC6D0F4-85F4-4380-9C49-FF26BC83D000}.TravisCI|x86.Build.0 = TravisCI|Any CPU
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -52,6 +59,10 @@ Global
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Release|x86.ActiveCfg = Release|Any CPU
 		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.Release|x86.Build.0 = Release|Any CPU
+		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.TravisCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.TravisCI|Any CPU.Build.0 = Debug|Any CPU
+		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.TravisCI|x86.ActiveCfg = TravisCI|Any CPU
+		{DCCA0C42-BECD-4445-9062-570C6ABC402C}.TravisCI|x86.Build.0 = TravisCI|Any CPU
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -60,6 +71,10 @@ Global
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Release|x86.ActiveCfg = Release|Any CPU
 		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.Release|x86.Build.0 = Release|Any CPU
+		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.TravisCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.TravisCI|Any CPU.Build.0 = Debug|Any CPU
+		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.TravisCI|x86.ActiveCfg = TravisCI|Any CPU
+		{949EBADD-2826-40F2-AF8F-462AC1AB6BF3}.TravisCI|x86.Build.0 = TravisCI|Any CPU
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -68,6 +83,10 @@ Global
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Release|x86.ActiveCfg = Release|Any CPU
 		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.Release|x86.Build.0 = Release|Any CPU
+		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.TravisCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.TravisCI|Any CPU.Build.0 = Debug|Any CPU
+		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.TravisCI|x86.ActiveCfg = TravisCI|Any CPU
+		{1BC98F0E-A5AC-4357-8E5A-DE29F3F1D6DD}.TravisCI|x86.Build.0 = TravisCI|Any CPU
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -76,6 +95,10 @@ Global
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{6933B020-918B-49DA-A072-4C60C080C2C8}.Release|x86.Build.0 = Release|Any CPU
+		{6933B020-918B-49DA-A072-4C60C080C2C8}.TravisCI|Any CPU.ActiveCfg = Debug|Any CPU
+		{6933B020-918B-49DA-A072-4C60C080C2C8}.TravisCI|Any CPU.Build.0 = Debug|Any CPU
+		{6933B020-918B-49DA-A072-4C60C080C2C8}.TravisCI|x86.ActiveCfg = TravisCI|Any CPU
+		{6933B020-918B-49DA-A072-4C60C080C2C8}.TravisCI|x86.Build.0 = TravisCI|Any CPU
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Debug|Any CPU.Build.0 = Debug|x86
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Debug|x86.ActiveCfg = Debug|x86
@@ -83,8 +106,14 @@ Global
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Release|Any CPU.ActiveCfg = Release|x86
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Release|x86.ActiveCfg = Release|x86
 		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.Release|x86.Build.0 = Release|x86
+		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.TravisCI|Any CPU.ActiveCfg = Release|x86
+		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.TravisCI|x86.ActiveCfg = Release|x86
+		{F13FB7EF-D892-4229-A1EB-8B595D71D64E}.TravisCI|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC029714-2830-47FC-AB2A-1DD04273BB87}
 	EndGlobalSection
 EndGlobal

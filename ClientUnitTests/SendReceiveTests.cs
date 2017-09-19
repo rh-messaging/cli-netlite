@@ -15,29 +15,29 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ClientUnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class SendReceiveTests
     {
         ClientRunner clientRunner = new ClientRunner();
 
-        [TestMethod]
+        [Test]
         public void TestSendMessage()
         {
             Assert.AreEqual(0, this.clientRunner.RunSender("--address send_example --count 1"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestSendReceiveMessage()
         {
             Assert.AreEqual(0, this.clientRunner.RunSender("--address send_receive_example --count 1"));
             Assert.AreEqual(0, this.clientRunner.RunReceiver("--address send_receive_example --count 1"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestConnectorClient()
         {
             Assert.AreEqual(0, this.clientRunner.RunConnector("--address connector_example --count 5 --timeout 5 --obj-ctrl CESR"));

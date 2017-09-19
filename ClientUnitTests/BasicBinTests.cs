@@ -15,46 +15,46 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ClientUnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class BasicBinTests
     {
         private ClientRunner clientRunner = new ClientRunner();
 
-        [TestMethod]
+        [Test]
         public void TestTrySenderHelp()
         {
             Assert.AreEqual(0, this.clientRunner.RunSender("--help"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryReceiverHelp()
         {
             Assert.AreEqual(0, this.clientRunner.RunReceiver("--help"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryConnectorHelp()
         {
             Assert.AreEqual(0, this.clientRunner.RunConnector("--help"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestSenderWrongArgument()
         {
             Assert.AreEqual(2, this.clientRunner.RunSender("--foo"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestReceiverWrongArgument()
         {
             Assert.AreEqual(2, this.clientRunner.RunReceiver("--foo"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestConnectorWrongArgument()
         {
             Assert.AreEqual(2, this.clientRunner.RunConnector("--foo"));
