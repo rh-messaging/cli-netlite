@@ -14,8 +14,8 @@
 
 ## Installation
 
-1. Download cli-netlite-<version>.msi from releases
-2. Install cli-netlite-<version>.msi
+1. Download cli-netlite-[version].msi from releases
+2. Install cli-netlite-[version].msi
 
 ## Using
 
