@@ -138,10 +138,11 @@ namespace ClientUnitTests
         [Test]
         public void TestSendDuration()
         {
-            Task listener = Task.Run(() => {
+            Task receiver = Task.Run(() => {
                 Assert.AreEqual(0, this.clientRunner.RunReceiver("--address duration_queue --count 5"));
             });
             Assert.AreEqual(0, this.clientRunner.RunSender("--address duration_queue --count 5 --msg-content string_message --duration 5"));
+            Task.WaitAll(receiver);
         }
 
         [Test]
@@ -169,10 +170,11 @@ namespace ClientUnitTests
         [Test]
         public void TestSendReceiveTimeout()
         {
-            Task listener = Task.Run(() => {
+            Task timeoutReceiver = Task.Run(() => {
                 Assert.AreEqual(0, this.clientRunner.RunReceiver("--address timeout_queue --count 5 --timeout 10"));
             });
             Assert.AreEqual(0, this.clientRunner.RunSender("--address timeout_queue --count 5 --timeout 5"));
+            Task.WaitAll(timeoutReceiver);
         }
     }
 }
