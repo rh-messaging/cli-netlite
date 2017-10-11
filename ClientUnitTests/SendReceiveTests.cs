@@ -134,5 +134,45 @@ namespace ClientUnitTests
             Assert.AreEqual(0, this.clientRunner.RunSender("--broker localhost:8888 --count 10"));
             Task.WaitAll(listener);
         }
+
+        [Test]
+        public void TestSendDuration()
+        {
+            Task listener = Task.Run(() => {
+                Assert.AreEqual(0, this.clientRunner.RunReceiver("--address duration_queue --count 5"));
+            });
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address duration_queue --count 5 --msg-content string_message --duration 5"));
+        }
+
+        [Test]
+        public void TestReceiveDuration()
+        {
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address duration_queue --count 5 --msg-content string_message"));
+            Assert.AreEqual(0, this.clientRunner.RunReceiver("--address duration_queue --count 5 --duration 5"));
+        }
+
+        [Test]
+        public void TestSendDurableMessage()
+        {
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address durable_queue --count 5 --msg-durable True"));
+            Assert.AreEqual(0, this.clientRunner.RunReceiver("--address durable_queue --count 5"));
+        }
+
+        [Test]
+        public void TestRejectMessages()
+        {
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address reject_queue --count 5"));
+            Assert.AreEqual(0, this.clientRunner.RunReceiver("--address reject_queue --count 5 --action reject"));
+            Assert.AreEqual(0, this.clientRunner.RunReceiver("--address reject_queue --count 5"));
+        }
+
+        [Test]
+        public void TestSendReceiveTimeout()
+        {
+            Task listener = Task.Run(() => {
+                Assert.AreEqual(0, this.clientRunner.RunReceiver("--address timeout_queue --count 5 --timeout 10"));
+            });
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address timeout_queue --count 5 --timeout 5"));
+        }
     }
 }
