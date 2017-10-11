@@ -129,8 +129,9 @@ namespace ClientUnitTests
         public void TestP2P()
         {
             Task listener = Task.Run(() => {
-                Assert.AreEqual(0, this.clientRunner.RunReceiver("--recv-listen true --recv-listen-port 8888 --count 10"));
+                Assert.AreEqual(0, this.clientRunner.RunReceiver("--recv-listen true --recv-listen-port 8888 --count 10 --timeout 5"));
             });
+            System.Threading.Thread.Sleep(1000);
             Assert.AreEqual(0, this.clientRunner.RunSender("--broker localhost:8888 --count 10"));
             Task.WaitAll(listener);
         }
