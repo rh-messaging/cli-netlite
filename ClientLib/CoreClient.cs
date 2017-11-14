@@ -83,7 +83,7 @@ namespace ClientLib
             if((options as BasicOptions).LogLib.ToUpper() == "TRANSPORT_FRM")
             {
                 Trace.TraceLevel = TraceLevel.Frame;
-                Trace.TraceListener = (f, a) => Console.WriteLine(
+                Trace.TraceListener = (l, f, a) => Console.WriteLine(
                         DateTime.Now.ToString("[hh:mm:ss.fff]") + " " + string.Format(f, a));
             }
         }
