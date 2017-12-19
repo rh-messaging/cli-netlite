@@ -17,16 +17,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Amqp.Types;
 using Amqp.Framing;
+using NDesk.Options;
 
 namespace ClientLib
 {
     /// <summary>
     /// Abstract class for parse help option
     /// </summary>
-    public abstract class Options //: OptionSet
+    public abstract class Options : OptionSet
     {
         protected readonly int _toSecConstant = 1000;
 
@@ -35,11 +37,11 @@ namespace ClientLib
         /// </summary>
         public Options()
         {
-            //this.Add("h|help", "show this message",
-            //    v => {
-            //        this.PrintHelp();
-            //        Environment.Exit(0);
-            //    });
+            this.Add("h|help", "show this message",
+                v => {
+                    this.PrintHelp();
+                    Environment.Exit(0);
+                });
         }
 
         /// <summary>
@@ -47,8 +49,8 @@ namespace ClientLib
         /// </summary>
         public void PrintHelp()
         {
-            //Console.WriteLine("<type_of_client> [opts]");
-            //this.WriteOptionDescriptions(Console.Out);
+            Console.WriteLine("<type_of_client> [opts]");
+            this.WriteOptionDescriptions(Console.Out);
         }
     }
 
@@ -67,24 +69,24 @@ namespace ClientLib
         /// <summary>
         /// Constructor
         /// </summary>
-        //public ConnectionOptions() : base()
-        //{
-        //    //default values
-        //    this.Url = "amqp://127.0.0.1:5672";
-        //    this.Heartbeat = -1;
-        //    this.AuthMech = String.Empty;
-        //    this.FrameSize = -1;
+        public ConnectionOptions() : base()
+        {
+            //default values
+            this.Url = "amqp://127.0.0.1:5672";
+            this.Heartbeat = -1;
+            this.AuthMech = String.Empty;
+            this.FrameSize = -1;
 
-        //    //add options
-        //    this.Add("b|broker=", "-b VALUE, --broker-url VALUE  url of broker to connect to (default amqp://127.0.0.1:5672)",
-        //        (string url) => { this.Url = this.amqpPrefix + url; });
-        //    this.Add("conn-heartbeat=", "time in s to delay between heatbeat packet",
-        //        (int heatbeat) => { this.Heartbeat = heatbeat * this._toSecConstant; });
-        //    this.Add("conn-auth-mechanisms=", "VALUE  SASL mechanisms; currently supported PLAIN | GSSAPI | EXTERNAL",
-        //        (string authMech) => { this.AuthMech = authMech; });
-        //    this.Add("conn-max-frame-size=", "Set connection max frame size",
-        //        (int frameSize) => { this.FrameSize = frameSize; });
-        //}
+            //add options
+            this.Add("b|broker=", "-b VALUE, --broker-url VALUE  url of broker to connect to (default amqp://127.0.0.1:5672)",
+                (string url) => { this.Url = this.amqpPrefix + url; });
+            this.Add("conn-heartbeat=", "time in s to delay between heatbeat packet",
+                (int heatbeat) => { this.Heartbeat = heatbeat * this._toSecConstant; });
+            this.Add("conn-auth-mechanisms=", "VALUE  SASL mechanisms; currently supported PLAIN | GSSAPI | EXTERNAL",
+                (string authMech) => { this.AuthMech = authMech; });
+            this.Add("conn-max-frame-size=", "Set connection max frame size",
+                (int frameSize) => { this.FrameSize = frameSize; });
+        }
     }
 
     /// <summary>
@@ -106,14 +108,14 @@ namespace ClientLib
             this.Address = "examples";
 
             //add options
-            //this.Add("link-at-most-once", "Sets 0-ack fire-and-forget delivery",
-            //    v => { this.Settlement = SettlementMode.AtMostOnce; });
-            //this.Add("link-at-least-once", "Sets 1-ack reliable delivery",
-            //    v => { this.Settlement = SettlementMode.AtLeastOnce; });
-            //this.Add("link-exactly-once", "Sets 2-ack reliable delivery",
-            //    v => { this.Settlement = SettlementMode.ExactlyOnce; });
-            //this.Add("a|address=", "queue/exchange name",
-            //    (string address) => { this.Address = address; });
+            this.Add("link-at-most-once", "Sets 0-ack fire-and-forget delivery",
+                v => { this.Settlement = SettlementMode.AtMostOnce; });
+            this.Add("link-at-least-once", "Sets 1-ack reliable delivery",
+                v => { this.Settlement = SettlementMode.AtLeastOnce; });
+            this.Add("link-exactly-once", "Sets 2-ack reliable delivery",
+                v => { this.Settlement = SettlementMode.ExactlyOnce; });
+            this.Add("a|address=", "queue/exchange name",
+                (string address) => { this.Address = address; });
         }
     }
 
@@ -147,20 +149,20 @@ namespace ClientLib
             this.LogLib = String.Empty;
 
             //add options
-            //this.Add("c|count=", "count of messages to send, receive or count of connections (default 1)",
-            //    (int count) => { this.MsgCount = count; });
-            //this.Add("close-sleep=", "sleep before end of client",
-            //    (int closeSleep) => { this.CloseSleep = closeSleep * this._toSecConstant; });
-            //this.Add("sync-mode=", "sync action",
-            //    (string syncMode) => { this.SyncMode = syncMode; });
-            //this.Add("t|timeout=", "timeout",
-            //    (int timeout) => { this.Timeout = TimeSpan.FromSeconds(timeout); });
-            //this.Add("log-msgs=", "log messages output [dict|body|upstream|interop]",
-            //    (string logMsgs) => { this.LogMsgs = logMsgs; });
-            //this.Add("log-stats=", "report various statistic/debug information [endpoint]",
-            //    (string logStats) => { this.LogStats = logStats; });
-            //this.Add("log-lib=", "client logging library level [TRANSPORT_FRM]",
-            //    (string logLib) => { this.LogLib = logLib; });
+            this.Add("c|count=", "count of messages to send, receive or count of connections (default 1)",
+                (int count) => { this.MsgCount = count; });
+            this.Add("close-sleep=", "sleep before end of client",
+                (int closeSleep) => { this.CloseSleep = closeSleep * this._toSecConstant; });
+            this.Add("sync-mode=", "sync action",
+                (string syncMode) => { this.SyncMode = syncMode; });
+            this.Add("t|timeout=", "timeout",
+                (int timeout) => { this.Timeout = TimeSpan.FromSeconds(timeout); });
+            this.Add("log-msgs=", "log messages output [dict|body|upstream|interop]",
+                (string logMsgs) => { this.LogMsgs = logMsgs; });
+            this.Add("log-stats=", "report various statistic/debug information [endpoint]",
+                (string logStats) => { this.LogStats = logStats; });
+            this.Add("log-lib=", "client logging library level [TRANSPORT_FRM]",
+                (string logLib) => { this.LogLib = logLib; });
         }
     }
 
@@ -186,18 +188,18 @@ namespace ClientLib
             this.TxLoopendAction = String.Empty;
             this.Capacity = -1;
 
-            //this.Add("duration=", "message actions total duration",
-            //    (int duration) => { this.Duration = duration; });
-            //this.Add("duration-mode=", "specifies where to wait; following values are supported: before-receive, after-receive-before-tx-action,after-receive-after-tx-action",
-            //    (string logLib) => { this.LogLib = logLib; });
-            //this.Add("tx-size=", "transactional mode: batch message count size negative skips tx-action before exit",
-            //    (int txSize) => { this.TxSize = txSize; });
-            //this.Add("tx-action=", "transactional action at the end of tx batch (commit, rollback, none)",
-            //    (string txAction) => { this.TxAction = txAction; });
-            //this.Add("tx-endloop-action=", "transactional action at the end message processing loop",
-            //    (string txEndloopAction) => { this.TxLoopendAction = txEndloopAction; });
-            //this.Add("capacity=", "set link's capacity",
-            //    (int capacity) => { this.Capacity = capacity; });
+            this.Add("duration=", "message actions total duration",
+                (int duration) => { this.Duration = duration; });
+            this.Add("duration-mode=", "specifies where to wait; following values are supported: before-receive, after-receive-before-tx-action,after-receive-after-tx-action",
+                (string logLib) => { this.LogLib = logLib; });
+            this.Add("tx-size=", "transactional mode: batch message count size negative skips tx-action before exit",
+                (int txSize) => { this.TxSize = txSize; });
+            this.Add("tx-action=", "transactional action at the end of tx batch (commit, rollback, none)",
+                (string txAction) => { this.TxAction = txAction; });
+            this.Add("tx-endloop-action=", "transactional action at the end message processing loop",
+                (string txEndloopAction) => { this.TxLoopendAction = txEndloopAction; });
+            this.Add("capacity=", "set link's capacity",
+                (int capacity) => { this.Capacity = capacity; });
 
         }
 
@@ -236,15 +238,15 @@ namespace ClientLib
         /// </summary>
         /// <param name="filePath">string file path with name and extension of file</param>
         /// <returns>string text from file</returns>
-        //private static String ReadInputFile(string filePath)
-        //{
-        //    string text = String.Empty;
-        //    using (StreamReader reader = new StreamReader(filePath))
-        //    {
-        //        text = reader.ReadToEnd();
-        //    }
-        //    return text;
-        //}
+        private static String ReadInputFile(string filePath)
+        {
+            string text = String.Empty;
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                text = reader.ReadToEnd();
+            }
+            return text;
+        }
 
         /// <summary>
         /// Constructor
@@ -273,130 +275,130 @@ namespace ClientLib
             this.MessageAnnotations = new MessageAnnotations();
 
             //add options
-            //this.Add("msg-id=", "use the supplied id instead of generating one",
-            //    (string id) => { this.Id = id; });
-            //this.Add("msg-reply-to=", "specify reply-to address",
-            //    (string replyTo) => { this.ReplyTo = replyTo; });
-            //this.Add("msg-subject=", "specify reply-to subject",
-            //    (string subject) => { this.Subject = subject; });
-            //this.Add("msg-property=", "specify reply-to property",
-            //    (string property) => {
-            //        char[] delimiters = { '=', '~' };
-            //        string[] pair = property.Split(delimiters);
-            //        int valueIndex = pair.Length == 2 ? 1 : 2;
-            //        if (pair.Length == 2 || pair.Length == 3)
-            //        {
-            //            double doubleVal;
-            //            int intVal;
-            //            bool boolVal;
-            //            if (int.TryParse(pair[valueIndex], out intVal))
-            //            {
-            //                this.Properties.Add(pair[0], intVal);
-            //            }
-            //            else if (double.TryParse(pair[valueIndex], out doubleVal))
-            //            {
-            //                this.Properties.Add(pair[0], doubleVal);
-            //            }
-            //            else if (Boolean.TryParse(pair[valueIndex], out boolVal))
-            //            {
-            //                this.Properties.Add(pair[0], boolVal);
-            //            }
-            //            else
-            //            {
-            //                this.Properties.Add(pair[0], pair[valueIndex]);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            throw new ArgumentException();
-            //        }
-            //    });
-            //this.Add("property-type=", "specify message property type (overrides auto-cast feature)",
-            //    (string propertyType) => { this.PropertyType = propertyType; });
-            //this.Add("msg-durable=", "send durable messages yes/no",
-            //    (string durable) => {
-            //        if (((durable == "yes") || (durable == "true")) || (durable == "True"))
-            //            this.Durable = true;
-            //        else if (((durable == "no") || (durable == "false")) || (durable == "False"))
-            //            this.Durable = false;
-            //        else
-            //            throw new ArgumentException();
-            //    });
-            //this.Add("msg-ttl=", "message time-to-live (ms)",
-            //    (uint ttl) => { this.Ttl = ttl; });
-            //this.Add("msg-priority=", "message priority",
-            //    (byte priority) => { this.Priority = priority; });
-            //this.Add("msg-correlation-id=", "message correlation id",
-            //    (string correlationId) => { this.CorrelationId = correlationId; });
-            //this.Add("msg-user-id=", "message user id",
-            //    (string userId) => {
-            //        char[] uid = userId.ToCharArray();
-            //        List<byte> uidl = new List<byte>();
-            //        foreach (char c in uid)
-            //        {
-            //            uidl.Add((byte)c);
-            //        }
-            //        this.UserId = uidl.ToArray();
-            //    });
-            //this.Add("msg-group-id=", "amqp message group id",
-            //    (string groupId) => { this.GroupId = groupId; });
-            //this.Add("msg-group-seq=", "amqp message group sequence",
-            //    (int groupSequence) => { this.GroupSequence = groupSequence; });
-            //this.Add("msg-reply-to-group-id=", "amqp message reply to group id",
-            //    (string replyToGroupId) => { this.ReplyToGroupId = replyToGroupId; });
-            //this.Add("msg-content-type=", "message content type; values string, int, long, float",
-            //    (string contentType) => { this.ContentType = contentType; });
-            //this.Add("msg-content=", "specify a content",
-            //    (string content) => { this.Content = content; });
-            //this.Add("L|msg-content-list-item=", "specify a multiple entries content",
-            //    (string listItem) => {
-            //        this.ListContent.Add(listItem);
-            //    });
-            //this.Add("M|msg-content-map-item=", "KEY=VALUE specify a map content",
-            //    (string mapItem) => {
-            //        char[] delimiters = { '=', '~' };
-            //        string[] pair = mapItem.Split(delimiters);
-            //        if (pair.Length == 2)
-            //        {
-            //            this.MapContent.Add(pair[0], pair[1]);
-            //        }
-            //        else if (pair.Length == 3)
-            //        {
-            //            this.MapContent.Add(pair[0], pair[2]);
-            //        }
-            //        else
-            //        {
-            //            throw new ArgumentException();
-            //        }
-            //    });
-            //this.Add("msg-content-from-file=", "specify file name to load the content from",
-            //    (string path) => { this.ContentFromFile = ReadInputFile(path); });
-            //this.Add("msg-annotation=", "specify amqp properties",
-            //    (string annotation) => {
-            //        char[] delimiters = { '=', '~' };
-            //        string[] pair = annotation.Split(delimiters);
-            //        if (pair.Length == 2)
-            //        {
-            //            double doubleVal;
-            //            bool boolVal;
-            //            if (double.TryParse(pair[1], out doubleVal))
-            //            {
-            //                this.MessageAnnotations[new Symbol(pair[0])] = doubleVal;
-            //            }
-            //            else if (Boolean.TryParse(pair[1], out boolVal))
-            //            {
-            //                this.MessageAnnotations[new Symbol(pair[0])] = boolVal;
-            //            }
-            //            else
-            //            {
-            //                this.MessageAnnotations[new Symbol(pair[0])] = pair[1];
-            //            }
-            //        }
-            //        else
-            //        {
-            //            throw new ArgumentException();
-            //        }
-            //    });
+            this.Add("msg-id=", "use the supplied id instead of generating one",
+                (string id) => { this.Id = id; });
+            this.Add("msg-reply-to=", "specify reply-to address",
+                (string replyTo) => { this.ReplyTo = replyTo; });
+            this.Add("msg-subject=", "specify reply-to subject",
+                (string subject) => { this.Subject = subject; });
+            this.Add("msg-property=", "specify reply-to property",
+                (string property) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = property.Split(delimiters);
+                    int valueIndex = pair.Length == 2 ? 1 : 2;
+                    if (pair.Length == 2 || pair.Length == 3)
+                    {
+                        double doubleVal;
+                        int intVal;
+                        bool boolVal;
+                        if (int.TryParse(pair[valueIndex], out intVal))
+                        {
+                            this.Properties.Add(pair[0], intVal);
+                        }
+                        else if (double.TryParse(pair[valueIndex], out doubleVal))
+                        {
+                            this.Properties.Add(pair[0], doubleVal);
+                        }
+                        else if (Boolean.TryParse(pair[valueIndex], out boolVal))
+                        {
+                            this.Properties.Add(pair[0], boolVal);
+                        }
+                        else
+                        {
+                            this.Properties.Add(pair[0], pair[valueIndex]);
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
+            this.Add("property-type=", "specify message property type (overrides auto-cast feature)",
+                (string propertyType) => { this.PropertyType = propertyType; });
+            this.Add("msg-durable=", "send durable messages yes/no",
+                (string durable) => {
+                    if (((durable == "yes") || (durable == "true")) || (durable == "True"))
+                        this.Durable = true;
+                    else if (((durable == "no") || (durable == "false")) || (durable == "False"))
+                        this.Durable = false;
+                    else
+                        throw new ArgumentException();
+                });
+            this.Add("msg-ttl=", "message time-to-live (ms)",
+                (uint ttl) => { this.Ttl = ttl; });
+            this.Add("msg-priority=", "message priority",
+                (byte priority) => { this.Priority = priority; });
+            this.Add("msg-correlation-id=", "message correlation id",
+                (string correlationId) => { this.CorrelationId = correlationId; });
+            this.Add("msg-user-id=", "message user id",
+                (string userId) => {
+                    char[] uid = userId.ToCharArray();
+                    List<byte> uidl = new List<byte>();
+                    foreach (char c in uid)
+                    {
+                        uidl.Add((byte)c);
+                    }
+                    this.UserId = uidl.ToArray();
+                });
+            this.Add("msg-group-id=", "amqp message group id",
+                (string groupId) => { this.GroupId = groupId; });
+            this.Add("msg-group-seq=", "amqp message group sequence",
+                (int groupSequence) => { this.GroupSequence = groupSequence; });
+            this.Add("msg-reply-to-group-id=", "amqp message reply to group id",
+                (string replyToGroupId) => { this.ReplyToGroupId = replyToGroupId; });
+            this.Add("msg-content-type=", "message content type; values string, int, long, float",
+                (string contentType) => { this.ContentType = contentType; });
+            this.Add("msg-content=", "specify a content",
+                (string content) => { this.Content = content; });
+            this.Add("L|msg-content-list-item=", "specify a multiple entries content",
+                (string listItem) => {
+                    this.ListContent.Add(listItem);
+                });
+            this.Add("M|msg-content-map-item=", "KEY=VALUE specify a map content",
+                (string mapItem) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = mapItem.Split(delimiters);
+                    if (pair.Length == 2)
+                    {
+                        this.MapContent.Add(pair[0], pair[1]);
+                    }
+                    else if (pair.Length == 3)
+                    {
+                        this.MapContent.Add(pair[0], pair[2]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
+            this.Add("msg-content-from-file=", "specify file name to load the content from",
+                (string path) => { this.ContentFromFile = ReadInputFile(path); });
+            this.Add("msg-annotation=", "specify amqp properties",
+                (string annotation) => {
+                    char[] delimiters = { '=', '~' };
+                    string[] pair = annotation.Split(delimiters);
+                    if (pair.Length == 2)
+                    {
+                        double doubleVal;
+                        bool boolVal;
+                        if (double.TryParse(pair[1], out doubleVal))
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = doubleVal;
+                        }
+                        else if (Boolean.TryParse(pair[1], out boolVal))
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = boolVal;
+                        }
+                        else
+                        {
+                            this.MessageAnnotations[new Symbol(pair[0])] = pair[1];
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                });
         }
     }
 
@@ -423,18 +425,18 @@ namespace ClientLib
             this.RecvListenerPort = 5672;
 
             //add options
-            //this.Add("action=", "action on acquired message [accept, release, reject]",
-            //    (string action) => { this.Action = action; });
-            //this.Add("recv-browse=", "get all messages from queue without delete",
-            //    (bool recvBrowse) => { this.RecvBrowse = recvBrowse; });
-            //this.Add("recv-selector=|msg-selector=", "get all messages on specific filter",
-            //    (string recvSelector) => { this.MsgSelector = recvSelector; });
-            //this.Add("process-reply-to", "reply on reply_on address",
-            //    (v) => { this.ProccessReplyTo = true; });
-            //this.Add("recv-listen=", "enable receiver as listener [true, false]",
-            //    (bool recvListen) => { this.RecvListener = recvListen; });
-            //this.Add("recv-listen-port=", "port for p2p",
-            //    (int port) => { this.RecvListenerPort = port; });
+            this.Add("action=", "action on acquired message [accept, release, reject]",
+                (string action) => { this.Action = action; });
+            this.Add("recv-browse=", "get all messages from queue without delete",
+                (bool recvBrowse) => { this.RecvBrowse = recvBrowse; });
+            this.Add("recv-selector=|msg-selector=", "get all messages on specific filter",
+                (string recvSelector) => { this.MsgSelector = recvSelector; });
+            this.Add("process-reply-to", "reply on reply_on address",
+                (v) => { this.ProccessReplyTo = true; });
+            this.Add("recv-listen=", "enable receiver as listener [true, false]",
+                (bool recvListen) => { this.RecvListener = recvListen; });
+            this.Add("recv-listen-port=", "port for p2p",
+                (int port) => { this.RecvListenerPort = port; });
         }
     }
 
@@ -455,8 +457,8 @@ namespace ClientLib
             this.ObjCtrl = "C";
 
             //add options
-            //this.Add("obj-ctrl=", "Optional creation object control based on <object-ids>",
-            //    (string ctrl) => { this.ObjCtrl = ctrl; });
+            this.Add("obj-ctrl=", "Optional creation object control based on <object-ids>",
+                (string ctrl) => { this.ObjCtrl = ctrl; });
         }
     }
 }

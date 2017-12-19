@@ -53,22 +53,23 @@ namespace ClientLib
         /// <returns>options</returns>
         protected void ParseArguments(string[] args, Options typeArguments)
         {
-            //try {
-            //    var unrecognized = typeArguments.Parse(args);
-            //    if (unrecognized.Count > 0)
-            //    {
-            //        typeArguments.PrintHelp();
-            //        foreach (var item in unrecognized)
-            //            Console.WriteLine("ERROR: {{ 'cause': {0}}}", item);
-            //        Environment.Exit(ReturnCode.ERROR_ARG);
-            //    }
-            //}
-            //catch
-            //{
-            //    typeArguments.PrintHelp();
-            //    Environment.Exit(ReturnCode.ERROR_ARG);
-            //}
-            //this.SetUpCliLogging(typeArguments);
+            try
+            {
+                var unrecognized = typeArguments.Parse(args);
+                if (unrecognized.Count > 0)
+                {
+                    typeArguments.PrintHelp();
+                    foreach (var item in unrecognized)
+                        Console.WriteLine("ERROR: {{ 'cause': {0}}}", item);
+                    Environment.Exit(ReturnCode.ERROR_ARG);
+                }
+            }
+            catch
+            {
+                typeArguments.PrintHelp();
+                Environment.Exit(ReturnCode.ERROR_ARG);
+            }
+            this.SetUpCliLogging(typeArguments);
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace ClientLib
         protected void ArgumentExceptionHandler(Exception ex, Options options)
         {
             Console.Error.WriteLine("Invalid command option: " + ex.Message);
-            options.PrintHelp();
+            //options.PrintHelp();
             this.exitCode = ReturnCode.ERROR_ARG;
         }
 
