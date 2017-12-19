@@ -61,8 +61,8 @@ namespace NetCoreClientUnitTest
                 client = "NetCoreConnector";
 
             p.StartInfo.FileName = "dotnet";
-            Console.WriteLine(p.StartInfo.FileName);
             p.StartInfo.Arguments = this.getPath(client) + " " + args;
+            Console.WriteLine(p.StartInfo.FileName + " " + p.StartInfo.Arguments);
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.CreateNoWindow = true;
