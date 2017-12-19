@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NetCoreSender": {
+      "commandName": "Project",
+      "commandLineArgs": "--broker 127.0.0.1:5672 --address kokot"
+    }
+  }
+}

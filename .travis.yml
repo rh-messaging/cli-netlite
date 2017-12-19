@@ -1,5 +1,6 @@
 language: csharp
 solution: cli-netlite.sln
+dotnet: 2.0.0
 
 services:
   - docker
@@ -7,6 +8,8 @@ services:
 install:
   - nuget restore cli-netlite.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - dotnet restore
+
 script:
   # https://docs.travis-ci.com/user/docker/
   - docker pull enkeys/alpine-openjdk-amq7-snapshot
@@ -14,3 +17,8 @@ script:
   - sleep 10
   - xbuild /p:Configuration=TravisCI cli-netlite.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./ClientUnitTests/bin/Debug/ClientUnitTests.dll
+  - dotnet build ./ClientLibNetCore
+  - dotnet build ./NetCoreSender
+  - dotnet build ./NetCoreReceiver
+  - dotnet build ./NetCoreConnector
+  - dotnet test ./NetCoreClientUnitTest/NetCoreClientUnitTest.csproj --verbosity normal

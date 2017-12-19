@@ -57,6 +57,18 @@
       <Component Id="NDesk.Options.dll">
         <File Id="NDesk.Options.dll" Source="..\ClientLib\bin\Debug\NDesk.Options.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="ClientLibNetCore.dll">
+        <File Id="ClientLibNetCore.dll" Source="..\ClientLibNetCore\bin\Debug\netcoreapp2.0\ClientLibNetCore.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreSender.dll">
+        <File Id="SenderCoreExecutable.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreReceiver.dll">
+        <File Id="ReceiverCoreExecutable.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreConnector.dll">
+        <File Id="ConnectorCoreExecutable.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="SetEnvPath"
                      Guid="{016cb18d-0357-425b-90a8-caf1826ddee6}">
         <CreateFolder />
@@ -73,6 +85,10 @@
       <ComponentRef Id="SenderExe" />
       <ComponentRef Id="ReceiverExe" />
       <ComponentRef Id="ConnectorExe"/>
+      <ComponentRef Id="ClientLibNetCore.dll"/>
+      <ComponentRef Id="SenderCoreExecutable.dll"/>
+      <ComponentRef Id="ConnectorCoreExecutable.dll"/>
+      <ComponentRef Id="ReceiverCoreExecutable.dll"/>
     </Feature>
   </Fragment>
 </Wix>

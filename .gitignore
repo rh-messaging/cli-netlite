@@ -1,15 +1,5 @@
-Sender/bin/
-Sender/obj/
-Receiver/bin/
-Receiver/obj/
-Connector/bin/
-Connector/obj/
-ClientLib/bin/
-ClientLib/obj/
-ClientUnitTests/bin/
-ClientUnitTests/obj/
-CliNetliteInstaller/bin/
-CliNetliteInstaller/obj/
+**/bin
+**/obj
 .vs/
 .vscode/
 packages/
