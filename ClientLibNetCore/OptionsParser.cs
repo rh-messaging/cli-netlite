@@ -65,6 +65,7 @@ namespace ClientLib
         public int Heartbeat { get; protected set; }
         public string AuthMech { get; protected set; }
         public int FrameSize { get; private set; }
+        public bool ConnSSL { get; protected set; }
 
         /// <summary>
         /// Constructor
@@ -86,6 +87,8 @@ namespace ClientLib
                 (string authMech) => { this.AuthMech = authMech; });
             this.Add("conn-max-frame-size=", "Set connection max frame size",
                 (int frameSize) => { this.FrameSize = frameSize; });
+            this.Add("conn-ssl=", "Enable ssl connection without verify host adn enable trustAll",
+                (bool connSSL) => { this.ConnSSL = connSSL; });
         }
     }
 

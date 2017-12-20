@@ -102,6 +102,11 @@ namespace ClientLib
         /// </summary>
         protected void CreateConnection(ConnectionOptions options)
         {
+            if (options.ConnSSL)
+            {
+                Connection.DisableServerCertValidation = true;
+                this.address = new Address(options.Url.Replace("amqp://", "amqps://"));
+            }
             Open open = new Open()
             {
                 ContainerId = Guid.NewGuid().ToString()
