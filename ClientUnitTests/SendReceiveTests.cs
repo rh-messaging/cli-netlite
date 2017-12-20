@@ -45,7 +45,7 @@ namespace ClientUnitTests
             Assert.AreEqual(0, this.clientRunner.RunReceiver("--address send_receive_example --count 1"));
         }
 
-        [Test]
+        //[Test]
         public void TestConnectorClient()
         {
             Assert.AreEqual(0, this.clientRunner.RunConnector("--address connector_example --count 5 --timeout 5 --obj-ctrl CESR"));
