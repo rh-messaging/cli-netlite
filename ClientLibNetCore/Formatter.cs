@@ -21,6 +21,7 @@ using System.Text;
 
 using Amqp;
 using Amqp.Types;
+using Newtonsoft.Json;
 
 namespace ClientLib
 {
@@ -110,6 +111,36 @@ namespace ClientLib
             msgDict.Add("properties", msg.ApplicationProperties);
             //msgDict.Add("message-annotations", msg.MessageAnnotations);
             Console.WriteLine(FormatMap(msgDict));
+        }
+
+        /// <summary>
+        /// Print message as python dict (keys are named by AMQP standard)
+        /// </summary>
+        /// <param name="msg">message object</param>
+        public static void PrintMessageAsJson(Message msg)
+        {
+            Dictionary<string, object> msgDict = new Dictionary<string, object>();
+            msgDict.Add("durable", msg.Header.Durable);
+            msgDict.Add("ttl", msg.Header.Ttl);
+            msgDict.Add("delivery-count", msg.Header.DeliveryCount);
+            msgDict.Add("priority", (uint)msg.Header.Priority);
+            msgDict.Add("first-aquirer", msg.Header.FirstAcquirer);
+            msgDict.Add("id", RemoveIDPrefix(msg.Properties.MessageId));
+            msgDict.Add("address", msg.Properties.To);
+            msgDict.Add("reply-to", msg.Properties.ReplyTo);
+            msgDict.Add("subject", msg.Properties.Subject);
+            msgDict.Add("creation-time", msg.Properties.CreationTime);
+            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime);
+            msgDict.Add("content-encoding", msg.Properties.ContentEncoding);
+            msgDict.Add("content-type", msg.Properties.ContentType);
+            msgDict.Add("correlation-id", RemoveIDPrefix(msg.Properties.CorrelationId));
+            msgDict.Add("user-id", msg.Properties.UserId);
+            msgDict.Add("group-id", msg.Properties.GroupId);
+            msgDict.Add("group-sequence", msg.Properties.GroupSequence);
+            msgDict.Add("reply-to-group-id", msg.Properties.ReplyToGroupId);
+            msgDict.Add("content", msg.Body);
+            msgDict.Add("properties", msg.ApplicationProperties);
+            Console.WriteLine(JsonConvert.SerializeObject(msgDict));
         }
 
         /// <summary>
@@ -538,6 +569,10 @@ namespace ClientLib
             else if (options.LogMsgs.Equals("interop"))
             {
                 Formatter.PrintMessageAsInterop(msg);
+            }
+            else if (options.LogMsgs.Equals("json"))
+            {
+                Formatter.PrintMessageAsJson(msg);
             }
         }
 
