@@ -69,6 +69,27 @@
       <Component Id="NetCoreConnector.dll">
         <File Id="ConnectorCoreExecutable.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="NetCoreSenderRunner.dll">
+        <File Id="SenderCoreExecutableRunner.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreReceiverRunner.dll">
+        <File Id="ReceiverCoreExecutableRunner.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreConnectorRunner.dll">
+        <File Id="ConnectorCoreExecutableRunner.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreSenderDeps.dll">
+        <File Id="SenderCoreExecutableDeps.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.deps.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreReceiverDeps.dll">
+        <File Id="ReceiverCoreExecutableDeps.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.deps.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="NetCoreConnectorDeps.dll">
+        <File Id="ConnectorCoreExecutableDeps.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.deps.json" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="jsonLib">
+        <File Id="jsonLib" Source="../packages/Newtonsoft.Json.10.0.3/lib/netstandard1.3/Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="SetEnvPath"
                      Guid="{016cb18d-0357-425b-90a8-caf1826ddee6}">
         <CreateFolder />
@@ -89,6 +110,13 @@
       <ComponentRef Id="SenderCoreExecutable.dll"/>
       <ComponentRef Id="ConnectorCoreExecutable.dll"/>
       <ComponentRef Id="ReceiverCoreExecutable.dll"/>
+      <ComponentRef Id="SenderCoreExecutableRunner.dll"/>
+      <ComponentRef Id="ConnectorCoreExecutableRunner.dll"/>
+      <ComponentRef Id="ReceiverCoreExecutableRunner.dll"/>
+      <ComponentRef Id="SenderCoreExecutableDeps.dll"/>
+      <ComponentRef Id="ConnectorCoreExecutableDeps.dll"/>
+      <ComponentRef Id="ReceiverCoreExecutableDeps.dll"/>
+      <ComponentRef Id="jsonLib"/>
     </Feature>
   </Fragment>
 </Wix>
