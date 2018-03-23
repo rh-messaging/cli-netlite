@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?define version="2.0.0.0"?>
+<?define version="2.0.1"?>
 <?define UpgradeCode="a580c04f-caec-4e18-9134-c4b8f1c8f1be"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*"
@@ -57,39 +57,6 @@
       <Component Id="NDesk.Options.dll">
         <File Id="NDesk.Options.dll" Source="..\ClientLib\bin\Debug\NDesk.Options.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
-      <Component Id="ClientLibNetCore.dll">
-        <File Id="ClientLibNetCore.dll" Source="..\ClientLibNetCore\bin\Debug\netcoreapp2.0\ClientLibNetCore.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreSender.dll">
-        <File Id="SenderCoreExecutable.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreReceiver.dll">
-        <File Id="ReceiverCoreExecutable.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreConnector.dll">
-        <File Id="ConnectorCoreExecutable.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreSenderRunner.dll">
-        <File Id="SenderCoreExecutableRunner.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreReceiverRunner.dll">
-        <File Id="ReceiverCoreExecutableRunner.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreConnectorRunner.dll">
-        <File Id="ConnectorCoreExecutableRunner.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.runtimeconfig.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreSenderDeps.dll">
-        <File Id="SenderCoreExecutableDeps.dll" Source="..\NetCoreSender\bin\Debug\netcoreapp2.0\cli-netlite-core-sender.deps.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreReceiverDeps.dll">
-        <File Id="ReceiverCoreExecutableDeps.dll" Source="..\NetCoreReceiver\bin\Debug\netcoreapp2.0\cli-netlite-core-receiver.deps.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="NetCoreConnectorDeps.dll">
-        <File Id="ConnectorCoreExecutableDeps.dll" Source="..\NetCoreConnector\bin\Debug\netcoreapp2.0\cli-netlite-core-connector.deps.json" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="jsonLib">
-        <File Id="jsonLib" Source="../packages/Newtonsoft.Json.10.0.3/lib/netstandard1.3/Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
       <Component Id="SetEnvPath"
                      Guid="{016cb18d-0357-425b-90a8-caf1826ddee6}">
         <CreateFolder />
@@ -97,7 +64,7 @@
       </Component>
     </ComponentGroup>
   </Fragment>
-  
+
   <Fragment>
     <Feature Id="MainApplication" Title="Main Application" Level="1">
       <ComponentRef Id="ClientLib.dll" />
@@ -106,17 +73,7 @@
       <ComponentRef Id="SenderExe" />
       <ComponentRef Id="ReceiverExe" />
       <ComponentRef Id="ConnectorExe"/>
-      <ComponentRef Id="ClientLibNetCore.dll"/>
-      <ComponentRef Id="SenderCoreExecutable.dll"/>
-      <ComponentRef Id="ConnectorCoreExecutable.dll"/>
-      <ComponentRef Id="ReceiverCoreExecutable.dll"/>
-      <ComponentRef Id="SenderCoreExecutableRunner.dll"/>
-      <ComponentRef Id="ConnectorCoreExecutableRunner.dll"/>
-      <ComponentRef Id="ReceiverCoreExecutableRunner.dll"/>
-      <ComponentRef Id="SenderCoreExecutableDeps.dll"/>
-      <ComponentRef Id="ConnectorCoreExecutableDeps.dll"/>
-      <ComponentRef Id="ReceiverCoreExecutableDeps.dll"/>
-      <ComponentRef Id="jsonLib"/>
     </Feature>
   </Fragment>
+
 </Wix>
