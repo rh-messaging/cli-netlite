@@ -144,6 +144,7 @@ namespace ClientLib
         public string LogMsgs { get; protected set; }
         public string LogStats { get; protected set; }
         public string LogLib { get; protected set; }
+        public bool HashContent { get; protected set; }
 
 
         /// <summary>
@@ -175,6 +176,8 @@ namespace ClientLib
                 (string logStats) => { this.LogStats = logStats; });
             this.Add("log-lib=", "client logging library level [TRANSPORT_FRM]",
                 (string logLib) => { this.LogLib = logLib; });
+            this.Add("msg-content-hashed=", "Display SHA-1 hash of message content in logged messages (yes/no)",
+                (string hashContent) => { this.HashContent = ParseBoolOption(hashContent); });
         }
     }
 
