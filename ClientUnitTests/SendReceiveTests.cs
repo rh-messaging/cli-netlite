@@ -97,6 +97,13 @@ namespace ClientUnitTests
         }
 
         [Test]
+        public void TestSendReceiveHashedContent()
+        {
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address send_receive_hashed_example --count 1 --msg-content aContent --log-msgs json --msg-content-hashed yes"));
+            Assert.AreEqual(0, this.clientRunner.RunReceiver("--address send_receive_hashed_example --count 1 --log-msgs json --msg-content-hashed yes"));
+        }
+
+        [Test]
         public void TestDrainEmptyQueue()
         {
             Assert.AreEqual(0, this.clientRunner.RunReceiver("--address empty_queue --count 0"));
