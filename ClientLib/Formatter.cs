@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 using Amqp;
@@ -39,7 +41,8 @@ namespace ClientLib
         /// Print message in upstream format
         /// </summary>
         /// <param name="msg">msg object</param>
-        public static void PrintMessage(Message msg)
+        /// <param name="hashContent"></param>
+        public static void PrintMessage(Message msg, bool hashContent)
         {            
             Console.WriteLine("Message(");
                 if (msg.Header != null) Console.WriteLine(msg.Header.ToString());
@@ -47,7 +50,7 @@ namespace ClientLib
                 if (msg.MessageAnnotations != null) Console.WriteLine(msg.MessageAnnotations.ToString());
                 if (msg.Properties != null) Console.WriteLine(msg.Properties.ToString());
                 if (msg.ApplicationProperties != null) Console.WriteLine(msg.ApplicationProperties.ToString());
-                if (msg.Body != null) Console.WriteLine("body:{0}", msg.Body.ToString());
+                if (msg.Body != null) Console.WriteLine("body:{0}", hashContent ? Hash(msg.Body.ToString()): msg.Body.ToString());
                 if (msg.Footer != null) Console.WriteLine(msg.Footer.ToString());
             Console.WriteLine(")");
         }
@@ -56,7 +59,8 @@ namespace ClientLib
         /// Print message as python dict
         /// </summary>
         /// <param name="msg">message object</param>
-        public static void PrintMessageAsDict(Message msg)
+        /// <param name="hashContent"></param>
+        public static void PrintMessageAsDict(Message msg, bool hashContent)
         {         
             Dictionary<string, object> msgDict = new Dictionary<string,object>();
             msgDict.Add("durable", msg.Header.Durable);
@@ -76,7 +80,7 @@ namespace ClientLib
             msgDict.Add("group-id", msg.Properties.GroupId);
             msgDict.Add("group-sequence", msg.Properties.GroupSequence);
             msgDict.Add("reply-to-group-id", msg.Properties.ReplyToGroupId);
-            msgDict.Add("content", msg.Body);
+            msgDict.Add("content", hashContent ? Hash(msg.Body) : msg.Body);
             msgDict.Add("properties", msg.ApplicationProperties);
             msgDict.Add("message-annotations", msg.MessageAnnotations);
             Console.WriteLine(FormatMap(msgDict));
@@ -86,7 +90,8 @@ namespace ClientLib
         /// Print message as python dict (keys are named by AMQP standard)
         /// </summary>
         /// <param name="msg">message object</param>
-        public static void PrintMessageAsInterop(Message msg)
+        /// <param name="hashContent"></param>
+        public static void PrintMessageAsInterop(Message msg, bool hashContent)
         {
             Dictionary<string, object> msgDict = new Dictionary<string, object>();
             msgDict.Add("durable", msg.Header.Durable);
@@ -107,7 +112,7 @@ namespace ClientLib
             msgDict.Add("group-id", msg.Properties.GroupId);
             msgDict.Add("group-sequence", msg.Properties.GroupSequence);
             msgDict.Add("reply-to-group-id", msg.Properties.ReplyToGroupId);
-            msgDict.Add("content", msg.Body);
+            msgDict.Add("content", hashContent ? Hash(msg.Body) : msg.Body);
             msgDict.Add("properties", msg.ApplicationProperties);
             //msgDict.Add("message-annotations", msg.MessageAnnotations);
             Console.WriteLine(FormatMap(msgDict));
@@ -117,7 +122,8 @@ namespace ClientLib
         /// Print message as python dict (keys are named by AMQP standard)
         /// </summary>
         /// <param name="msg">message object</param>
-        public static void PrintMessageAsJson(Message msg)
+        /// <param name="hashContent"></param>
+        public static void PrintMessageAsJson(Message msg, bool hashContent)
         {
             Dictionary<string, object> msgDict = new Dictionary<string, object>();
             msgDict.Add("durable", msg.Header.Durable);
@@ -138,7 +144,7 @@ namespace ClientLib
             msgDict.Add("group-id", msg.Properties.GroupId);
             msgDict.Add("group-sequence", msg.Properties.GroupSequence);
             msgDict.Add("reply-to-group-id", msg.Properties.ReplyToGroupId);
-            msgDict.Add("content", msg.Body);
+            msgDict.Add("content", hashContent ? Hash(msg.Body) : msg.Body);
             msgDict.Add("properties", msg.ApplicationProperties);
             Console.WriteLine(JsonConvert.SerializeObject(msgDict));
         }
@@ -553,29 +559,41 @@ namespace ClientLib
         /// <param name="options">agruments of client</param>
         public static void LogMessage(Message msg, SenderReceiverOptions options)
         {
+            var hashContent = options.HashContent;
 
             if (options.LogMsgs == "body")
             {
-                Console.WriteLine(msg.Body);
+                Console.WriteLine(hashContent ? Hash(msg.Body) : msg.Body);
             }
             else if (options.LogMsgs.Equals("dict"))
             {
-                Formatter.PrintMessageAsDict(msg);
+                Formatter.PrintMessageAsDict(msg, hashContent);
             }
             else if (options.LogMsgs.Equals("upstream"))
             {
-                Formatter.PrintMessage(msg);
+                Formatter.PrintMessage(msg, hashContent);
             }
             else if (options.LogMsgs.Equals("interop"))
             {
-                Formatter.PrintMessageAsInterop(msg);
+                Formatter.PrintMessageAsInterop(msg, hashContent);
             }
             else if (options.LogMsgs.Equals("json"))
             {
-                Formatter.PrintMessageAsJson(msg);
+                Formatter.PrintMessageAsJson(msg, hashContent);
             }
         }
 
-        
+        private static object Hash(object msgBody)
+        {
+            byte[] hash;
+            SHA1 sha = new SHA1CryptoServiceProvider();
+            if (msgBody is byte[])
+                hash = sha.ComputeHash((byte[]) msgBody);
+            else if (msgBody is string)
+                hash = sha.ComputeHash(Encoding.UTF8.GetBytes((string) msgBody));
+            else
+                hash = sha.ComputeHash(Encoding.UTF8.GetBytes(FormatVariant(msgBody)));
+            return String.Concat(hash.Select(b => b.ToString("x2")));
+        }
     }
 }

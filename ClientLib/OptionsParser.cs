@@ -52,6 +52,15 @@ namespace ClientLib
             Console.WriteLine("<type_of_client> [opts]");
             this.WriteOptionDescriptions(Console.Out);
         }
+
+        protected static bool ParseBoolOption(string durable)
+        {
+            if (durable == "yes" || durable == "true" || durable == "True")
+                return true;
+            if (durable == "no" || durable == "false" || durable == "False")
+                return false;
+            throw new ArgumentException();
+        }
     }
 
     /// <summary>
@@ -135,6 +144,7 @@ namespace ClientLib
         public string LogMsgs { get; protected set; }
         public string LogStats { get; protected set; }
         public string LogLib { get; protected set; }
+        public bool HashContent { get; protected set; }
 
 
         /// <summary>
@@ -166,6 +176,8 @@ namespace ClientLib
                 (string logStats) => { this.LogStats = logStats; });
             this.Add("log-lib=", "client logging library level [TRANSPORT_FRM]",
                 (string logLib) => { this.LogLib = logLib; });
+            this.Add("msg-content-hashed=", "Display SHA-1 hash of message content in logged messages (yes/no)",
+                (string hashContent) => { this.HashContent = ParseBoolOption(hashContent); });
         }
     }
 
@@ -319,14 +331,7 @@ namespace ClientLib
             this.Add("property-type=", "specify message property type (overrides auto-cast feature)",
                 (string propertyType) => { this.PropertyType = propertyType; });
             this.Add("msg-durable=", "send durable messages yes/no",
-                (string durable) => {
-                    if (((durable == "yes") || (durable == "true")) || (durable == "True"))
-                        this.Durable = true;
-                    else if (((durable == "no") || (durable == "false")) || (durable == "False"))
-                        this.Durable = false;
-                    else
-                        throw new ArgumentException();
-                });
+                (string durable) => { this.Durable = ParseBoolOption(durable); });
             this.Add("msg-ttl=", "message time-to-live (ms)",
                 (uint ttl) => { this.Ttl = ttl; });
             this.Add("msg-priority=", "message priority",
