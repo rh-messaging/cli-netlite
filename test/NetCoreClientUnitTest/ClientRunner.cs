@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace ClientUnitTests
+namespace NetCoreClientUnitTest
 {
     /// <summary>
     /// Enum of client types
@@ -19,14 +19,14 @@ namespace ClientUnitTests
     /// </summary>
     class ClientRunner
     {
-        private string projectDir;
+        private string baseDir;
 
         /// <summary>
         /// Construnctor of class
         /// </summary>
         public ClientRunner()
         {
-            this.projectDir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            this.baseDir = AppDomain.CurrentDomain.BaseDirectory + "/../../../../../";
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace ClientUnitTests
         private String getPath(String client)
         {
             return System.IO.Path.Combine(new String[] {
-                this.projectDir,
-                client + "/bin/Debug",
-                "cli-netlite-" + client.ToLower() + ".exe" });
+                "/src/dotNetCore/",
+                client + "/bin/Debug/netcoreapp2.0",
+                "cli-netlite-core-" + client.ToLower().Replace("netcore", "") + ".dll" });
         }
 
         /// <summary>
@@ -54,15 +54,15 @@ namespace ClientUnitTests
 
             string client;
             if (type == ClientType.Sender)
-                client = "Sender";
+                client = "NetCoreSender";
             else if (type == ClientType.Receiver)
-                client = "Receiver";
+                client = "NetCoreReceiver";
             else
-                client = "Connector";
+                client = "NetCoreConnector";
 
-            p.StartInfo.FileName = this.getPath(client);
-            Console.WriteLine(p.StartInfo.FileName);
-            p.StartInfo.Arguments = args;
+            p.StartInfo.FileName = "dotnet";
+            p.StartInfo.Arguments = this.baseDir + this.getPath(client) + " " + args;
+            Console.WriteLine(p.StartInfo.FileName + " " + p.StartInfo.Arguments);
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.CreateNoWindow = true;

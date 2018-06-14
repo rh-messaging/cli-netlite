@@ -8,6 +8,6 @@ if exist %MS_COMMUNITY_PATH% (
 )
 
 rem publish netcore client
-dotnet publish -f netcoreapp2.0 .\NetCoreSender\NetCoreSender.csproj
-dotnet publish -f netcoreapp2.0 .\NetCoreReceiver\NetCoreReceiver.csproj
-dotnet publish -f netcoreapp2.0 .\NetCoreConnector\NetCoreConnector.csproj
+dotnet publish -f netcoreapp2.0 .\src\dotNetCore\NetCoreSender\NetCoreSender.csproj
+dotnet publish -f netcoreapp2.0 .\src\dotNetCore\NetCoreReceiver\NetCoreReceiver.csproj
+dotnet publish -f netcoreapp2.0 .\src\dotNetCore\NetCoreConnector\NetCoreConnector.csproj

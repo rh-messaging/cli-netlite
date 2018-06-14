@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\dotNet\Sender\Sender.cs" Link="Sender.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClientLibNetCore\ClientLibNetCore.csproj" />
   </ItemGroup>
 

@@ -5,9 +5,11 @@ dotnet: 2.0.0
 services:
   - docker
 
+before_install:
+  - sudo apt-get install nunit-console
+
 install:
   - nuget restore cli-netlite.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
   - dotnet restore
 
 script:
@@ -15,10 +17,10 @@ script:
   - docker pull enkeys/alpine-openjdk-amq7-snapshot
   - docker run --rm -v`pwd`/scripts:/mnt -p 5672:5672 -p 61616:61616 --entrypoint ash enkeys/alpine-openjdk-amq7-snapshot /mnt/entrypoint.sh amq7-server &
   - sleep 10
-  - xbuild /p:Configuration=TravisCI cli-netlite.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./ClientUnitTests/bin/Debug/ClientUnitTests.dll
-  - dotnet build ./ClientLibNetCore
-  - dotnet build ./NetCoreSender
-  - dotnet build ./NetCoreReceiver
-  - dotnet build ./NetCoreConnector
-  - dotnet test ./NetCoreClientUnitTest/NetCoreClientUnitTest.csproj --verbosity normal
+  - msbuild /p:Configuration=TravisCI cli-netlite.sln
+  - nunit-console ./test/ClientUnitTests/bin/Debug/ClientUnitTests.dll
+  - dotnet build ./src/dotNetCore/ClientLibNetCore
+  - dotnet build ./src/dotNetCore/NetCoreSender
+  - dotnet build ./src/dotNetCore/NetCoreReceiver
+  - dotnet build ./src/dotNetCore/NetCoreConnector
+  - dotnet test ./test/NetCoreClientUnitTest/NetCoreClientUnitTest.csproj --verbosity normal

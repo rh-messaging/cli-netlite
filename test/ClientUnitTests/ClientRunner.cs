@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
-namespace NetCoreClientUnitTest
+namespace ClientUnitTests
 {
     /// <summary>
     /// Enum of client types
@@ -26,7 +27,7 @@ namespace NetCoreClientUnitTest
         /// </summary>
         public ClientRunner()
         {
-            this.projectDir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            this.projectDir = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         /// <summary>
@@ -37,9 +38,10 @@ namespace NetCoreClientUnitTest
         private String getPath(String client)
         {
             return System.IO.Path.Combine(new String[] {
-                this.projectDir,
-                client + "/bin/Debug/netcoreapp2.0",
-                "cli-netlite-core-" + client.ToLower().Replace("netcore", "") + ".dll" });
+                this.projectDir, "../../../../",
+                "src/dotNet/",
+                client + "/bin/Debug",
+                "cli-netlite-" + client.ToLower() + ".exe" });
         }
 
         /// <summary>
@@ -54,15 +56,15 @@ namespace NetCoreClientUnitTest
 
             string client;
             if (type == ClientType.Sender)
-                client = "NetCoreSender";
+                client = "Sender";
             else if (type == ClientType.Receiver)
-                client = "NetCoreReceiver";
+                client = "Receiver";
             else
-                client = "NetCoreConnector";
+                client = "Connector";
 
-            p.StartInfo.FileName = "dotnet";
-            p.StartInfo.Arguments = this.getPath(client) + " " + args;
-            Console.WriteLine(p.StartInfo.FileName + " " + p.StartInfo.Arguments);
+            p.StartInfo.FileName = this.getPath(client);
+            Console.WriteLine(p.StartInfo.FileName);
+            p.StartInfo.Arguments = args;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.CreateNoWindow = true;
