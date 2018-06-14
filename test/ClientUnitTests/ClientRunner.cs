@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace ClientUnitTests
 {
@@ -26,7 +27,7 @@ namespace ClientUnitTests
         /// </summary>
         public ClientRunner()
         {
-            this.projectDir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            this.projectDir = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace ClientUnitTests
         private String getPath(String client)
         {
             return System.IO.Path.Combine(new String[] {
-                this.projectDir,
+                this.projectDir, "../../../../",
                 "src/dotNet/",
                 client + "/bin/Debug",
                 "cli-netlite-" + client.ToLower() + ".exe" });

@@ -19,14 +19,14 @@ namespace NetCoreClientUnitTest
     /// </summary>
     class ClientRunner
     {
-        private string projectDir;
+        private string baseDir;
 
         /// <summary>
         /// Construnctor of class
         /// </summary>
         public ClientRunner()
         {
-            this.projectDir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            this.baseDir = AppDomain.CurrentDomain.BaseDirectory + "/../../../../../";
         }
 
         /// <summary>
@@ -37,7 +37,6 @@ namespace NetCoreClientUnitTest
         private String getPath(String client)
         {
             return System.IO.Path.Combine(new String[] {
-                this.projectDir,
                 "/src/dotNetCore/",
                 client + "/bin/Debug/netcoreapp2.0",
                 "cli-netlite-core-" + client.ToLower().Replace("netcore", "") + ".dll" });
@@ -62,7 +61,7 @@ namespace NetCoreClientUnitTest
                 client = "NetCoreConnector";
 
             p.StartInfo.FileName = "dotnet";
-            p.StartInfo.Arguments = this.getPath(client) + " " + args;
+            p.StartInfo.Arguments = this.baseDir + this.getPath(client) + " " + args;
             Console.WriteLine(p.StartInfo.FileName + " " + p.StartInfo.Arguments);
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.UseShellExecute = false;
