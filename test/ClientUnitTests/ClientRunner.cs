@@ -38,6 +38,7 @@ namespace ClientUnitTests
         {
             return System.IO.Path.Combine(new String[] {
                 this.projectDir,
+                "src/dotNet/",
                 client + "/bin/Debug",
                 "cli-netlite-" + client.ToLower() + ".exe" });
         }
