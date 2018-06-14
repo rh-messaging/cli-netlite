@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\dotNet\Connector\Connector.cs" Link="Connector.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClientLibNetCore\ClientLibNetCore.csproj" />
   </ItemGroup>
 
