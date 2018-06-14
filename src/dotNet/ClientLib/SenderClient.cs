@@ -84,6 +84,8 @@ namespace ClientLib
             msg.Properties.GroupSequence = (uint)options.GroupSequence;
             if (!String.IsNullOrEmpty(options.ReplyToGroupId))
                 msg.Properties.ReplyToGroupId = options.ReplyToGroupId;
+            if (!String.IsNullOrEmpty(options.To))
+                msg.Properties.To = options.To;
 
             //set up message header
             msg.Header = new Header()

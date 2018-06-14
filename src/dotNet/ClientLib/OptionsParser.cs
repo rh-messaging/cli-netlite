@@ -227,6 +227,7 @@ namespace ClientLib
     {
         // properties
         public string Id { get; private set; }
+        public string To { get; private set; }
         public string ReplyTo { get; private set; }
         public string Subject { get; private set; }
         public bool Durable { get; private set; }
@@ -270,6 +271,7 @@ namespace ClientLib
         {
             //default values
             this.Id = String.Empty;
+            this.To = String.Empty;
             this.ReplyTo = String.Empty;
             this.Subject = String.Empty;
             this.Durable = false;
@@ -292,6 +294,8 @@ namespace ClientLib
             //add options
             this.Add("msg-id=", "use the supplied id instead of generating one",
                 (string id) => { this.Id = id; });
+            this.Add("msg-to=", "amqp:to in message header",
+                (string to) => { this.To = to; });
             this.Add("msg-reply-to=", "specify reply-to address",
                 (string replyTo) => { this.ReplyTo = replyTo; });
             this.Add("msg-subject=", "specify reply-to subject",

@@ -100,6 +100,7 @@ namespace ClientLib
             msgDict.Add("priority", (uint)msg.Header.Priority);
             msgDict.Add("first-aquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", RemoveIDPrefix(msg.Properties.MessageId));
+            msgDict.Add("to", msg.Properties.To);
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
@@ -132,6 +133,7 @@ namespace ClientLib
             msgDict.Add("priority", (uint)msg.Header.Priority);
             msgDict.Add("first-aquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", RemoveIDPrefix(msg.Properties.MessageId));
+            msgDict.Add("to", msg.Properties.To);
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
