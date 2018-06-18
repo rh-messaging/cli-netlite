@@ -213,7 +213,7 @@ namespace ClientLib
 
             while (txFlag && (nReceived < options.MsgCount || options.MsgCount == 0) && options.TxSize > 0)
             {
-                using (var txs = new TransactionScope(TransactionScopeOption.RequiresNew))
+                using (var txs = new TransactionScope(TransactionScopeOption.RequiresNew, TimeSpan.FromMinutes(10)))
                 {
                     for (int i = 0; i < options.TxSize; i++)
                     {
@@ -223,6 +223,9 @@ namespace ClientLib
                             receiver.Accept(message);
                             Formatter.LogMessage(message, options);
                             nReceived++;
+                        }else
+                        {
+                            break;
                         }
                     }
                     if (options.TxAction.ToLower() == "commit")
@@ -234,7 +237,7 @@ namespace ClientLib
                     txFlag = false;
                 }
             }
-            using (var txs = new TransactionScope(TransactionScopeOption.RequiresNew))
+            using (var txs = new TransactionScope(TransactionScopeOption.RequiresNew, TimeSpan.FromMinutes(10)))
             {
                 while ((message = receiver.Receive(options.Timeout)) != null && (nReceived < options.MsgCount || options.MsgCount == 0))
                 {
