@@ -179,6 +179,7 @@ namespace ClientLib
         /// <param name="options">parsed options</param>
         protected void ArgumentExceptionHandler(Exception ex, Options options)
         {
+            Console.Error.WriteLine(ex.StackTrace);
             Console.Error.WriteLine("Invalid command option: " + ex.Message);
             options.PrintHelp();
             this.exitCode = ReturnCode.ERROR_ARG;
@@ -191,6 +192,7 @@ namespace ClientLib
         /// <param name="options">parsed options</param>
         protected void OtherExceptionHandler(Exception ex, Options options)
         {
+            Console.Error.WriteLine(ex.StackTrace);
             Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", ex.Message.ToString());
 
             if (options is SenderOptions || options is ReceiverOptions)
