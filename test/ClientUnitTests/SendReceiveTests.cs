@@ -184,5 +184,10 @@ namespace ClientUnitTests
             Assert.AreEqual(0, this.clientRunner.RunSender("--address timeout_queue --count 5 --timeout 5"));
             Task.WaitAll(timeoutReceiver);
         }
+        [Test]
+        public void TestMsgContentType()
+        {
+            Assert.AreEqual(0, this.clientRunner.RunSender("--address content_queue --count 5 --content-type int --msg-content 5"));
+        }
     }
 }

@@ -53,11 +53,11 @@ namespace ClientLib
             this.WriteOptionDescriptions(Console.Out);
         }
 
-        protected static bool ParseBoolOption(string durable)
+        protected static bool ParseBoolOption(string value)
         {
-            if (durable == "yes" || durable == "true" || durable == "True")
+            if (value == "yes" || value == "true" || value == "True")
                 return true;
-            if (durable == "no" || durable == "false" || durable == "False")
+            if (value == "no" || value == "false" || value == "False")
                 return false;
             throw new ArgumentException();
         }
@@ -358,7 +358,7 @@ namespace ClientLib
                 (int groupSequence) => { this.GroupSequence = groupSequence; });
             this.Add("msg-reply-to-group-id=", "amqp message reply to group id",
                 (string replyToGroupId) => { this.ReplyToGroupId = replyToGroupId; });
-            this.Add("msg-content-type=", "message content type; values string, int, long, float",
+            this.Add("content-type=|msg-content-type=", "message content type; values string, int, long, float",
                 (string contentType) => { this.ContentType = contentType; });
             this.Add("msg-content=", "specify a content",
                 (string content) => { this.Content = content; });
