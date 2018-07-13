@@ -67,6 +67,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="OptionsParser.cs" />
     <Compile Include="ReceiverClient.cs" />
+    <Compile Include="ReconnectSender.cs" />
     <Compile Include="SenderClient.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
