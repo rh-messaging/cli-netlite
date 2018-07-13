@@ -15,6 +15,8 @@
  */
 
 using ClientLib;
+using System;
+using System.Linq;
 
 namespace Sender
 {
@@ -29,8 +31,17 @@ namespace Sender
         /// <param name="args">args from command line</param>
         static void Main(string[] args)
         {
-            SenderClient client = new SenderClient();
-            client.Run(args);
+            var index = Array.FindIndex(args, x => x == "--reconnect-example");
+
+            if (index != -1)
+            {
+                Application.Main(args.Skip(1).ToArray());
+            }
+            else
+            {
+                SenderClient client = new SenderClient();
+                client.Run(args);
+            }
         }
 
     }

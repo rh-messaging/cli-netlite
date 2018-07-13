@@ -3,3 +3,6 @@
 .vs/
 .vscode/
 packages/
+dist
+.DS_STORE
+UpgradeLog.htm

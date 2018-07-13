@@ -12,6 +12,7 @@
     <Compile Include="..\..\dotNet\ClientLib\Options.cs" Link="Options.cs" />
     <Compile Include="..\..\dotNet\ClientLib\OptionsParser.cs" Link="OptionsParser.cs" />
     <Compile Include="..\..\dotNet\ClientLib\ReceiverClient.cs" Link="ReceiverClient.cs" />
+    <Compile Include="..\..\dotNet\ClientLib\ReconnectSender.cs" Link="ReconnectSender.cs" />
     <Compile Include="..\..\dotNet\ClientLib\SenderClient.cs" Link="SenderClient.cs" />
     <Compile Include="..\..\dotNet\ClientLib\Utils.cs" Link="Utils.cs" />
   </ItemGroup>
