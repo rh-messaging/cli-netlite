@@ -67,7 +67,7 @@ namespace ClientLib
             msgDict.Add("ttl", msg.Header.Ttl);
             msgDict.Add("delivery_count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
-            msgDict.Add("first_aquirer", msg.Header.FirstAcquirer);
+            msgDict.Add("first_acquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", msg.Properties.MessageId);
             msgDict.Add("reply_to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
@@ -98,7 +98,7 @@ namespace ClientLib
             msgDict.Add("ttl", msg.Header.Ttl);
             msgDict.Add("delivery-count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
-            msgDict.Add("first-aquirer", msg.Header.FirstAcquirer);
+            msgDict.Add("first-acquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", RemoveIDPrefix(msg.Properties.MessageId));
             msgDict.Add("to", msg.Properties.To);
             msgDict.Add("address", msg.Properties.To);
@@ -131,7 +131,7 @@ namespace ClientLib
             msgDict.Add("ttl", msg.Header.Ttl);
             msgDict.Add("delivery-count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
-            msgDict.Add("first-aquirer", msg.Header.FirstAcquirer);
+            msgDict.Add("first-acquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", RemoveIDPrefix(msg.Properties.MessageId));
             msgDict.Add("to", msg.Properties.To);
             msgDict.Add("address", msg.Properties.To);
