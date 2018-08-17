@@ -302,35 +302,8 @@ namespace ClientLib
                 (string subject) => { this.Subject = subject; });
             this.Add("msg-property=", "specify reply-to property",
                 (string property) => {
-                    char[] delimiters = { '=', '~' };
-                    string[] pair = property.Split(delimiters);
-                    int valueIndex = pair.Length == 2 ? 1 : 2;
-                    if (pair.Length == 2 || pair.Length == 3)
-                    {
-                        double doubleVal;
-                        int intVal;
-                        bool boolVal;
-                        if (int.TryParse(pair[valueIndex], out intVal))
-                        {
-                            this.Properties.Add(pair[0], intVal);
-                        }
-                        else if (double.TryParse(pair[valueIndex], out doubleVal))
-                        {
-                            this.Properties.Add(pair[0], doubleVal);
-                        }
-                        else if (Boolean.TryParse(pair[valueIndex], out boolVal))
-                        {
-                            this.Properties.Add(pair[0], boolVal);
-                        }
-                        else
-                        {
-                            this.Properties.Add(pair[0], pair[valueIndex]);
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
+                    var (key, value) = ParseItem(property);
+                    this.Properties.Add(key, value);
                 });
             this.Add("property-type=", "specify message property type (overrides auto-cast feature)",
                 (string propertyType) => { this.PropertyType = propertyType; });
@@ -402,8 +375,15 @@ namespace ClientLib
 
         private static object AutoCast(string value)
         {
+            int intVal;
             double doubleVal;
             bool boolVal;
+
+            if (int.TryParse(value, out intVal))
+            {
+                return intVal;
+            }
+
             if (double.TryParse(value, out doubleVal))
             {
                 return doubleVal;
@@ -412,6 +392,11 @@ namespace ClientLib
             if (Boolean.TryParse(value, out boolVal))
             {
                 return boolVal;
+            }
+
+            if (value == string.Empty)
+            {
+                return null;
             }
 
             return value;

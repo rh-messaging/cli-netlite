@@ -63,6 +63,12 @@ namespace ClientUnitTests
         {
             Assert.AreEqual(ValueTuple.Create("", "aString"), SenderOptions.ParseItem("=aString"));
         }
+        
+        [Test]
+        public void ParsesTildeEmptyAsNull()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", (String) null), SenderOptions.ParseItem("key~"));
+        }
 
         [Test]
         public void ParsesTildeDoubleAsDouble()
@@ -80,6 +86,12 @@ namespace ClientUnitTests
         public void ParseTildeStringAsString()
         {
             Assert.AreEqual(ValueTuple.Create("key", "aString"), SenderOptions.ParseItem("key~aString"));
+        }
+
+        [Test]
+        public void ParsesTildeIntAsInt()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", 42), SenderOptions.ParseItem("key~42"));
         }
     }
 }
