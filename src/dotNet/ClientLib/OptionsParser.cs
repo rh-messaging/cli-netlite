@@ -404,14 +404,14 @@ namespace ClientLib
         public static (object, object) ParseItem(string mapItem)
         {
             char[] delimiters = {'=', '~'};
-            string[] pair = mapItem.Split(delimiters, 2);
-            
-            if (pair.Length == 2)
-            {
-                return (pair[0], pair[1]);
-            }
+            int i = mapItem.IndexOfAny(delimiters);
 
-            throw new ArgumentException();
+            if (i == -1)
+            {
+                throw new ArgumentException();
+            }
+            
+            return (mapItem.Substring(0, i), mapItem.Substring(i+1));
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ClientLib;
 using NUnit.Framework;
 
@@ -7,6 +7,12 @@ namespace ClientUnitTests
     // https://haacked.com/archive/2012/01/02/structuring-unit-tests.aspx/
     public class TheSenderOptionsItemParser
     {
+        [Test]
+        public void ThrowsOnEmptyString()
+        {
+            Assert.Throws<ArgumentException>(() => SenderOptions.ParseItem(""));
+        }
+        
         [Test]
         public void ParsesEqualsStringAsString()
         {
@@ -41,6 +47,21 @@ namespace ClientUnitTests
         public void ParsesTildeStringAsString()
         {
             Assert.AreEqual(ValueTuple.Create("key", "aString"), SenderOptions.ParseItem("key~aString"));
+        }
+
+        [Test]
+        public void ParsesEqualsEmptyAsEmptyString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", ""), SenderOptions.ParseItem("key="));
+        }
+
+        /// <summary>
+        /// Note: null key is not supported py ParseItem
+        /// </summary>
+        [Test]
+        public void ParsesEmptyEqualsAsEmptyStringKey()
+        {
+            Assert.AreEqual(ValueTuple.Create("", "aString"), SenderOptions.ParseItem("=aString"));
         }
     }
 }
