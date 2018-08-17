@@ -368,20 +368,8 @@ namespace ClientLib
                 });
             this.Add("M|msg-content-map-item=", "KEY=VALUE specify a map content",
                 (string mapItem) => {
-                    char[] delimiters = { '=', '~' };
-                    string[] pair = mapItem.Split(delimiters);
-                    if (pair.Length == 2)
-                    {
-                        this.MapContent.Add(pair[0], pair[1]);
-                    }
-                    else if (pair.Length == 3)
-                    {
-                        this.MapContent.Add(pair[0], pair[2]);
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
+                    var (key, value) = ParseItem(mapItem);
+                    this.MapContent.Add(key, value);
                 });
             this.Add("msg-content-from-file=", "specify file name to load the content from",
                 (string path) => { this.ContentFromFile = ReadInputFile(path); });
@@ -411,6 +399,24 @@ namespace ClientLib
                         throw new ArgumentException();
                     }
                 });
+        }
+
+        public static (object, object) ParseItem(string mapItem)
+        {
+            char[] delimiters = {'=', '~'};
+            string[] pair = mapItem.Split(delimiters);
+            
+            if (pair.Length == 2)
+            {
+                return (pair[0], pair[1]);
+            }
+
+            if (pair.Length == 3)
+            {
+                return (pair[0], pair[2]);
+            }
+
+            throw new ArgumentException();
         }
     }
 
