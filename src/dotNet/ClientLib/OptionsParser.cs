@@ -337,7 +337,7 @@ namespace ClientLib
                 (string content) => { this.Content = content; });
             this.Add("L|msg-content-list-item=", "specify a multiple entries content",
                 (string listItem) => {
-                    this.ListContent.Add(listItem);
+                    this.ListContent.Add(ParseValue(listItem));
                 });
             this.Add("M|msg-content-map-item=", "KEY=VALUE specify a map content",
                 (string mapItem) => {
@@ -371,6 +371,16 @@ namespace ClientLib
                 return (key, AutoCast(value));
             }
             return (key, value);
+        }
+
+        public static object ParseValue(string value)
+        {
+            if (value.Length >= 1 && value[0] == '~')
+            {
+                return AutoCast(value.Substring(1));
+            }
+
+            return value;
         }
 
         private static object AutoCast(string value)

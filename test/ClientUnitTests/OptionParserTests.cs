@@ -94,4 +94,31 @@ namespace ClientUnitTests
             Assert.AreEqual(ValueTuple.Create("key", 42), SenderOptions.ParseItem("key~42"));
         }
     }
+
+    public class TheSenderOptionsValueParser
+    {
+        [Test]
+        public void ParsesEmtpyStringAsEmptyString()
+        {
+            Assert.AreEqual(string.Empty, SenderOptions.ParseValue(""));
+        }
+
+        [Test]
+        public void ParsesTildeAsNull()
+        {
+            Assert.AreEqual(null, SenderOptions.ParseValue("~"));
+        }
+
+        [Test]
+        public void ParsesDoubleTildeAsString()
+        {
+            Assert.AreEqual("~", SenderOptions.ParseValue("~~"));
+        }
+
+        [Test]
+        public void ParsesTildeIntAsInt()
+        {
+            Assert.AreEqual(42, SenderOptions.ParseValue("~42"));
+        }
+    }
 }
