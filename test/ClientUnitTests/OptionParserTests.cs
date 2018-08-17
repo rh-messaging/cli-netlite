@@ -18,5 +18,29 @@ namespace ClientUnitTests
         {
             Assert.AreEqual(ValueTuple.Create("key", "42"), SenderOptions.ParseItem("key=42"));
         }
+
+        [Test]
+        public void ParsesEqualsTildeAsString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", "~1"), SenderOptions.ParseItem("key=~1"));
+        }
+
+        [Test]
+        public void ParsesDoubleTildeAsString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", "~1"), SenderOptions.ParseItem("key~~1"));
+        }
+
+        [Test]
+        public void ParsesDoubleEqualsAsString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", "=1"), SenderOptions.ParseItem("key==1"));
+        }
+
+        [Test]
+        public void ParsesTildeStringAsString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", "aString"), SenderOptions.ParseItem("key~aString"));
+        }
     }
 }
