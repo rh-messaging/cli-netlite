@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using ClientLib;
 using NUnit.Framework;
 
@@ -62,6 +62,24 @@ namespace ClientUnitTests
         public void ParsesEmptyEqualsAsEmptyStringKey()
         {
             Assert.AreEqual(ValueTuple.Create("", "aString"), SenderOptions.ParseItem("=aString"));
+        }
+
+        [Test]
+        public void ParsesTildeDoubleAsDouble()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", 3.14d), SenderOptions.ParseItem("key~3.14"));
+        }
+
+        [Test]
+        public void ParsesTildeBoolAsBool()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", false), SenderOptions.ParseItem("key~False"));
+        }
+
+        [Test]
+        public void ParseTildeStringAsString()
+        {
+            Assert.AreEqual(ValueTuple.Create("key", "aString"), SenderOptions.ParseItem("key~aString"));
         }
     }
 }

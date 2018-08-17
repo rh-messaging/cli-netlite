@@ -375,33 +375,12 @@ namespace ClientLib
                 (string path) => { this.ContentFromFile = ReadInputFile(path); });
             this.Add("msg-annotation=", "specify amqp properties",
                 (string annotation) => {
-                    char[] delimiters = { '=', '~' };
-                    string[] pair = annotation.Split(delimiters);
-                    if (pair.Length == 2)
-                    {
-                        double doubleVal;
-                        bool boolVal;
-                        if (double.TryParse(pair[1], out doubleVal))
-                        {
-                            this.MessageAnnotations[new Symbol(pair[0])] = doubleVal;
-                        }
-                        else if (Boolean.TryParse(pair[1], out boolVal))
-                        {
-                            this.MessageAnnotations[new Symbol(pair[0])] = boolVal;
-                        }
-                        else
-                        {
-                            this.MessageAnnotations[new Symbol(pair[0])] = pair[1];
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
+                    var (key, value) = ParseItem(annotation);
+                    this.MessageAnnotations[new Symbol(key)] = value;
                 });
         }
 
-        public static (object, object) ParseItem(string mapItem)
+        public static (string, object) ParseItem(string mapItem)
         {
             char[] delimiters = {'=', '~'};
             int i = mapItem.IndexOfAny(delimiters);
@@ -410,8 +389,32 @@ namespace ClientLib
             {
                 throw new ArgumentException();
             }
-            
-            return (mapItem.Substring(0, i), mapItem.Substring(i+1));
+
+            var key = mapItem.Substring(0, i);
+            var value = mapItem.Substring(i+1);
+
+            if (mapItem[i] == '~')
+            {
+                return (key, AutoCast(value));
+            }
+            return (key, value);
+        }
+
+        private static object AutoCast(string value)
+        {
+            double doubleVal;
+            bool boolVal;
+            if (double.TryParse(value, out doubleVal))
+            {
+                return doubleVal;
+            }
+
+            if (Boolean.TryParse(value, out boolVal))
+            {
+                return boolVal;
+            }
+
+            return value;
         }
     }
 
