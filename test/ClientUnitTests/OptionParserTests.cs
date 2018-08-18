@@ -98,7 +98,7 @@ namespace ClientUnitTests
     public class TheSenderOptionsValueParser
     {
         [Test]
-        public void ParsesEmtpyStringAsEmptyString()
+        public void ParsesEmptyStringAsEmptyString()
         {
             Assert.AreEqual(string.Empty, SenderOptions.ParseValue(""));
         }

@@ -35,7 +35,7 @@ namespace ClientLib
         /// </summary>
         /// <param name="options">receiver options</param>
         /// <returns>build receiver link</returns>
-        private ReceiverLink PeprareReceiverLink(ReceiverOptions options)
+        private ReceiverLink PrepareReceiverLink(ReceiverOptions options)
         {
             Source recvSource = new Source()
             {
@@ -141,14 +141,14 @@ namespace ClientLib
             /// <summary>
             /// init of message processor
             /// </summary>
-            /// <param name="messageContext">context of messsage</param>
+            /// <param name="messageContext">context of message</param>
             public void Process(MessageContext messageContext)
             {
                 var task = this.ReplyAsync(messageContext);
             }
 
             /// <summary>
-            /// Async tassk for handling requst
+            /// Async task for handling request
             /// </summary>
             /// <param name="messageContext">context of message</param>
             /// <returns>async task</returns>
@@ -255,7 +255,7 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Standart receiving
+        /// Standard receiving
         /// </summary>
         /// <param name="receiver">receiver link</param>
         /// <param name="options">receiver options</param>
@@ -276,7 +276,7 @@ namespace ClientLib
                 Formatter.LogMessage(message, options);
                 nReceived++;
 
-                if (options.ProccessReplyTo)
+                if (options.ProcessReplyTo)
                 {
                     SenderLink sender = new SenderLink(session, "reply-to-sender", message.Properties.ReplyTo);
                     sender.Send(message);
@@ -294,10 +294,10 @@ namespace ClientLib
         #endregion
 
         /// <summary>
-        /// Main metho for receiver (receive messages)
+        /// Main method for receiver (receive messages)
         /// </summary>
         /// <param name="args">array arguments from command line</param>
-        /// <returns>returncode</returns>
+        /// <returns>return code</returns>
         public void Run(string[] args) 
         {
             ReceiverOptions options = new ReceiverOptions();
@@ -326,7 +326,7 @@ namespace ClientLib
 
                     Utils.TsSnapStore(this.ptsdata, 'D', options.LogStats);
 
-                    ReceiverLink receiver = this.PeprareReceiverLink(options);
+                    ReceiverLink receiver = this.PrepareReceiverLink(options);
 
                     Message message = new Message();
 

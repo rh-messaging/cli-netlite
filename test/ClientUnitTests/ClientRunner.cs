@@ -23,7 +23,7 @@ namespace ClientUnitTests
         private string projectDir;
 
         /// <summary>
-        /// Construnctor of class
+        /// Constructor of class
         /// </summary>
         public ClientRunner()
         {
@@ -31,7 +31,7 @@ namespace ClientUnitTests
         }
 
         /// <summary>
-        /// Build path of exucutable client
+        /// Build path of executable client
         /// </summary>
         /// <param name="client">client string</param>
         /// <returns>path to executable</returns>
