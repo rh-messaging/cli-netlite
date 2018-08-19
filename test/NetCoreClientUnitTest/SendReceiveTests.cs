@@ -161,5 +161,16 @@ namespace NetCoreClientUnitTest
         {
             Assert.AreEqual(0, this.clientRunner.RunSender("--address content_queue --count 5 --content-type int --msg-content 5"));
         }
+
+        [TestMethod]
+        public void TestInfinityReceiving()
+        {
+            Task listener = Task.Run(() => {
+                Assert.AreEqual(0, this.clientRunner.RunReceiver("--timeout -1"));
+            });
+            System.Threading.Thread.Sleep(1000);
+            Assert.AreEqual(0, this.clientRunner.RunSender("--count 10 --duration 30"));
+            Task.WaitAll(listener);
+        }
     }
 }

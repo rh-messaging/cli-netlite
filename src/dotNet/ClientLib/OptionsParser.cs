@@ -141,6 +141,7 @@ namespace ClientLib
         public int CloseSleep { get; protected set; }
         public string SyncMode { get; protected set; }
         public TimeSpan Timeout { get; protected set; }
+        public bool isInfinityReceiving { get; protected set; }
         public string LogMsgs { get; protected set; }
         public string LogStats { get; protected set; }
         public string LogLib { get; protected set; }
@@ -157,6 +158,7 @@ namespace ClientLib
             this.CloseSleep = 0;
             this.SyncMode = "none";
             this.Timeout = TimeSpan.FromSeconds(1);
+            this.isInfinityReceiving = false;
             this.LogMsgs = "upstream";
             this.LogStats = String.Empty;
             this.LogLib = String.Empty;
@@ -169,7 +171,15 @@ namespace ClientLib
             this.Add("sync-mode=", "sync action",
                 (string syncMode) => { this.SyncMode = syncMode; });
             this.Add("t|timeout=", "timeout",
-                (int timeout) => { this.Timeout = TimeSpan.FromSeconds(timeout); });
+                (int timeout) => {
+                    if (timeout == -1)
+                    {
+                        this.Timeout = TimeSpan.FromDays(100);
+                        this.isInfinityReceiving = true;
+                    }
+                    else
+                        this.Timeout = TimeSpan.FromSeconds(timeout);
+                });
             this.Add("log-msgs=", "log messages output [dict|body|upstream|interop]",
                 (string logMsgs) => { this.LogMsgs = logMsgs; });
             this.Add("log-stats=", "report various statistic/debug information [endpoint]",
