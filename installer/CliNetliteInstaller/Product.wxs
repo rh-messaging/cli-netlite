@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?define version="2.1.4"?>
+<?define version="2.1.5"?>
 <?define UpgradeCode="a580c04f-caec-4e18-9134-c4b8f1c8f1be"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*"
@@ -54,6 +54,9 @@
       <Component Id="Amqp.Net.dll">
         <File Id="Amqp.Net.dll" Source="..\..\src\dotNet\ClientLib\bin\Debug\Amqp.Net.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="System.ValueTuple.dll">
+        <File Id="System.ValueTuple.dll" Source="..\..\src\dotNet\ClientLib\bin\Debug\System.ValueTuple.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="SetEnvPath"
                      Guid="{016cb18d-0357-425b-90a8-caf1826ddee6}">
         <CreateFolder />
@@ -69,6 +72,7 @@
       <ComponentRef Id="SenderExe" />
       <ComponentRef Id="ReceiverExe" />
       <ComponentRef Id="ConnectorExe"/>
+      <ComponentRef Id="System.ValueTuple.dll"/>
     </Feature>
   </Fragment>
 
