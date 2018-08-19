@@ -64,15 +64,15 @@ namespace ClientLib
         {         
             Dictionary<string, object> msgDict = new Dictionary<string,object>();
             msgDict.Add("durable", msg.Header.Durable);
-            msgDict.Add("ttl", msg.Header.Ttl);
+            msgDict.Add("ttl", FormatTTL(msg.Header.Ttl));
             msgDict.Add("delivery_count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
             msgDict.Add("first_acquirer", msg.Header.FirstAcquirer);
             msgDict.Add("id", msg.Properties.MessageId);
             msgDict.Add("reply_to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
-            msgDict.Add("creation-time", msg.Properties.CreationTime);
-            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime);
+            msgDict.Add("creation-time", msg.Properties.CreationTime.Ticks);
+            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime.Ticks);
             msgDict.Add("content_encoding", msg.Properties.ContentEncoding);
             msgDict.Add("content_type", msg.Properties.ContentType);
             msgDict.Add("correlation_id", msg.Properties.CorrelationId);
@@ -95,7 +95,7 @@ namespace ClientLib
         {
             Dictionary<string, object> msgDict = new Dictionary<string, object>();
             msgDict.Add("durable", msg.Header.Durable);
-            msgDict.Add("ttl", msg.Header.Ttl);
+            msgDict.Add("ttl", FormatTTL(msg.Header.Ttl));
             msgDict.Add("delivery-count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
             msgDict.Add("first-acquirer", msg.Header.FirstAcquirer);
@@ -104,8 +104,8 @@ namespace ClientLib
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
-            msgDict.Add("creation-time", msg.Properties.CreationTime);
-            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime);
+            msgDict.Add("creation-time", msg.Properties.CreationTime.Ticks);
+            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime.Ticks);
             msgDict.Add("content-encoding", msg.Properties.ContentEncoding);
             msgDict.Add("content-type", msg.Properties.ContentType);
             msgDict.Add("correlation-id", RemoveIDPrefix(msg.Properties.CorrelationId));
@@ -128,7 +128,7 @@ namespace ClientLib
         {
             Dictionary<string, object> msgDict = new Dictionary<string, object>();
             msgDict.Add("durable", msg.Header.Durable);
-            msgDict.Add("ttl", msg.Header.Ttl);
+            msgDict.Add("ttl", FormatTTL(msg.Header.Ttl));
             msgDict.Add("delivery-count", msg.Header.DeliveryCount);
             msgDict.Add("priority", (uint)msg.Header.Priority);
             msgDict.Add("first-acquirer", msg.Header.FirstAcquirer);
@@ -137,8 +137,8 @@ namespace ClientLib
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
-            msgDict.Add("creation-time", msg.Properties.CreationTime);
-            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime);
+            msgDict.Add("creation-time", msg.Properties.CreationTime.Ticks);
+            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime.Ticks);
             msgDict.Add("content-encoding", msg.Properties.ContentEncoding);
             msgDict.Add("content-type", msg.Properties.ContentType);
             msgDict.Add("correlation-id", RemoveIDPrefix(msg.Properties.CorrelationId));
@@ -459,14 +459,13 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Format sec to string ms
+        /// Format TTL so that no TTL present is printed as a 0
         /// </summary>
-        /// <param name="inData">byte</param>
-        /// <returns>string in ms</returns>
-        public static string FormatTTL(byte inData)
+        /// <param name="inData">uint</param>
+        /// <returns>ttl in ms</returns>
+        public static uint FormatTTL(uint inData)
         {
-            double sec_data = inData / 1000;
-            return sec_data.ToString();
+            return inData == uint.MaxValue ? 0 : inData;
         }
 
         /// <summary>
