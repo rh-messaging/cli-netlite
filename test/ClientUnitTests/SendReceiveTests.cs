@@ -194,10 +194,10 @@ namespace ClientUnitTests
         public void TestInfinityReceiving()
         {
             Task listener = Task.Run(() => {
-                Assert.AreEqual(0, this.clientRunner.RunReceiver("--timeout -1"));
+                Assert.AreEqual(0, this.clientRunner.RunReceiver("--timeout -1 --address timeout_queue"));
             });
             System.Threading.Thread.Sleep(1000);
-            Assert.AreEqual(0, this.clientRunner.RunSender("--count 10 --duration 30"));
+            Assert.AreEqual(0, this.clientRunner.RunSender("--count 10 --duration 30 --address timeout_queue"));
             Task.WaitAll(listener);
         }
     }
