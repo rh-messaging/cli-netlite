@@ -188,14 +188,17 @@ namespace ClientLib
         {
             Message message = null;
 
-            while ((message = receiver.Receive(options.Timeout)) != null)
+            while ((message = receiver.Receive(options.Timeout)) != null || options.isInfinityReceiving)
             {
-                Formatter.LogMessage(message, options);
-                Utils.TsSnapStore(this.ptsdata, 'F', options.LogStats);
-
-                if (!String.IsNullOrEmpty(options.MsgSelector))
+                if (message != null)
                 {
-                    receiver.Accept(message);
+                    Formatter.LogMessage(message, options);
+                    Utils.TsSnapStore(this.ptsdata, 'F', options.LogStats);
+
+                    if (!String.IsNullOrEmpty(options.MsgSelector))
+                    {
+                        receiver.Accept(message);
+                    }
                 }
             }
         }
@@ -338,7 +341,7 @@ namespace ClientLib
                     bool tx_batch_flag = String.IsNullOrEmpty(options.TxLoopendAction) ? (options.TxSize > 0) : true;
 
                     //receiving of messages
-                    if (options.RecvBrowse || !String.IsNullOrEmpty(options.MsgSelector))
+                    if (options.RecvBrowse || !String.IsNullOrEmpty(options.MsgSelector) || options.isInfinityReceiving)
                         this.ReceiveAll(receiver, options);
                     else
                     {
