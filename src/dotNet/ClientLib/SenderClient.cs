@@ -129,7 +129,7 @@ namespace ClientLib
         /// Prepare sender link with options
         /// </summary>
         /// <param name="options">sender options</param>
-        /// <returns>builted sender link</returns>
+        /// <returns>built sender link</returns>
         private SenderLink PrepareSender(SenderOptions options)
         {
             Attach attach = new Attach()
@@ -206,7 +206,7 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Method for standart sending of messages
+        /// Method for standard sending of messages
         /// </summary>
         /// <param name="sender">sender link</param>
         /// <param name="options">options</param>

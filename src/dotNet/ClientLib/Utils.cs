@@ -44,7 +44,7 @@ namespace ClientLib
         /// <param name="in_ts">initial timestamp</param>
         /// <param name="in_count">number of iterations</param>
         /// <param name="in_duration">total time of all iterations</param>
-        /// <param name="in_indx"next iteration index></param>
+        /// <param name="in_indx">next iteration index</param>
         public static void Sleep4Next(double in_ts, int in_count, int in_duration,
                                       int in_indx)
         {
@@ -99,7 +99,7 @@ namespace ClientLib
         /// <param name="tsData">an initialized arraylist</param>
         /// <param name="step">the timestamp step</param>
         /// <param name="optMode">timestamping mode (if contains string "perf:(in_step)" then enabled)</param>
-        /// <param name="in_msg_ts">message</param>
+        /// <param name="msg">message</param>
         public static void TsSnapStore(List<double> tsData, char step, string optMode, double msg)
         {
             if ((tsData != null) && (tsData.Count > 0) && (optMode.IndexOf("perf") > -1))

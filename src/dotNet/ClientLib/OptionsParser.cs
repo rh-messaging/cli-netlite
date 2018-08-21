@@ -64,7 +64,7 @@ namespace ClientLib
     }
 
     /// <summary>
-    /// Abstract slacc for store connection options fol clients
+    /// Abstract class for store connection options fol clients
     /// </summary>
     public abstract class ConnectionOptions : Options
     {
@@ -90,8 +90,8 @@ namespace ClientLib
             //add options
             this.Add("b|broker=", "-b VALUE, --broker-url VALUE  url of broker to connect to (default amqp://127.0.0.1:5672)",
                 (string url) => { this.Url = this.amqpPrefix + url; });
-            this.Add("conn-heartbeat=", "time in s to delay between heatbeat packet",
-                (int heatbeat) => { this.Heartbeat = heatbeat * this._toSecConstant; });
+            this.Add("conn-heartbeat=", "time in s to delay between heartbeat packets",
+                (int heartbeat) => { this.Heartbeat = heartbeat * this._toSecConstant; });
             this.Add("conn-auth-mechanisms=", "VALUE  SASL mechanisms; currently supported PLAIN | GSSAPI | EXTERNAL",
                 (string authMech) => { this.AuthMech = authMech; });
             this.Add("conn-max-frame-size=", "Set connection max frame size",
@@ -132,7 +132,7 @@ namespace ClientLib
     }
 
     /// <summary>
-    /// Abstract class for store toegether options for all clients
+    /// Abstract class to store together options for all clients
     /// </summary>
     public abstract class BasicOptions : LinkOptions
     {
@@ -192,7 +192,7 @@ namespace ClientLib
     }
 
     /// <summary>
-    /// Abstract class for store sender and receiver toegether options
+    /// Abstract class to store sender and receiver together options
     /// </summary>
     public abstract class SenderReceiverOptions : BasicOptions
     {
@@ -432,7 +432,7 @@ namespace ClientLib
         public string Action { get; private set; }
         public bool RecvBrowse { get; private set; }
         public string MsgSelector { get; private set; }
-        public bool ProccessReplyTo { get; private set; }
+        public bool ProcessReplyTo { get; private set; }
         public bool RecvListener { get; private set; }
         public int RecvListenerPort { get; private set; }
 
@@ -453,7 +453,7 @@ namespace ClientLib
             this.Add("recv-selector=|msg-selector=", "get all messages on specific filter",
                 (string recvSelector) => { this.MsgSelector = recvSelector; });
             this.Add("process-reply-to", "reply on reply_on address",
-                (v) => { this.ProccessReplyTo = true; });
+                (v) => { this.ProcessReplyTo = true; });
             this.Add("recv-listen=", "enable receiver as listener [true, false]",
                 (bool recvListen) => { this.RecvListener = recvListen; });
             this.Add("recv-listen-port=", "port for p2p",

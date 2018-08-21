@@ -5,7 +5,7 @@
 //
 //  THIS CODE IS PROVIDED *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 //  EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OR
-//  CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABLITY OR
+//  CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY OR
 //  NON-INFRINGEMENT.
 //
 //  See the Apache Version 2.0 License for specific language governing permissions and
@@ -14,9 +14,9 @@
 
 //
 // ReconnectSender 
-//  * Detects a failed AMQP connection and automatically reconnets it.
+//  * Detects a failed AMQP connection and automatically reconnects it.
 //  * Recovers from a peer failure by connecting to a list of AMQP brokers/peers.
-//  * Builds or rebuilds the AMPQ object hierarchy in response to protocol events.
+//  * Builds or rebuilds the AMQP object hierarchy in response to protocol events.
 //  * Recovers from all failures by reconnecting the AMQP connection.
 //
 // Command line:

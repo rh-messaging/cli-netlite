@@ -212,7 +212,7 @@ namespace ClientLib
         /// Method to rap unhandled exception
         /// </summary>
         /// <param name="sender">sender object</param>
-        /// <param name="e">exception</param>
+        /// <param name="ex">exception</param>
         void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs ex)
         {
             Console.Error.WriteLine("ERROR: {{'cause': '{0}'}}", ex.ToString());

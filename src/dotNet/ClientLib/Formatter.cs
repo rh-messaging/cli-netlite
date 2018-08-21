@@ -28,7 +28,7 @@ using Newtonsoft.Json;
 namespace ClientLib
 {
     /// <summary>
-    /// Class for formating message to text output
+    /// Class for formatting message to text output
     /// </summary>
     public class Formatter
     {
@@ -154,7 +154,7 @@ namespace ClientLib
         /// <summary>
         /// Print statistic info
         /// </summary>
-        /// <param name="in_dict">stats obejct</param>
+        /// <param name="in_dict">stats object</param>
         public static void PrintStatistics(Dictionary<string, object> in_dict)
         {
             Console.WriteLine("STATS " + FormatMap(in_dict));
@@ -224,7 +224,7 @@ namespace ClientLib
         /// <summary>
         /// Format string
         /// </summary>
-        /// <param name="inData">streing</param>
+        /// <param name="inData">string</param>
         /// <returns>string</returns>
         public static string FormatString(string inData)
         {
@@ -259,7 +259,7 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Format unsingned integer as string
+        /// Format unsigned integer as string
         /// </summary>
         /// <param name="inData">uint</param>
         /// <returns>string</returns>
@@ -299,7 +299,7 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Format fload as string
+        /// Format float as string
         /// </summary>
         /// <param name="inData">float</param>
         /// <returns>string</returns>
@@ -387,7 +387,7 @@ namespace ClientLib
         /// Format list as string
         /// </summary>
         /// <param name="inData">collection (arrayList, list)</param>
-        /// <returnsstring></returns>
+        /// <returns>string</returns>
         public static string FormatList(Collection<object> inData)
         {
             if (inData != null)
@@ -554,10 +554,10 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Method for run formating
+        /// Method for run formatting
         /// </summary>
         /// <param name="msg">message object</param>
-        /// <param name="options">agruments of client</param>
+        /// <param name="options">arguments of client</param>
         public static void LogMessage(Message msg, SenderReceiverOptions options)
         {
             var hashContent = options.HashContent;

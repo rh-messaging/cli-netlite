@@ -22,7 +22,7 @@ namespace NetCoreClientUnitTest
         private string baseDir;
 
         /// <summary>
-        /// Construnctor of class
+        /// Constructor of class
         /// </summary>
         public ClientRunner()
         {
@@ -30,7 +30,7 @@ namespace NetCoreClientUnitTest
         }
 
         /// <summary>
-        /// Build path of exucutable client
+        /// Build path of executable client
         /// </summary>
         /// <param name="client">client string</param>
         /// <returns>path to executable</returns>
