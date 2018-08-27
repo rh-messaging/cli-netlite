@@ -88,10 +88,12 @@ namespace ClientLib
                 msg.Properties.To = options.To;
 
             //set up message header
-            msg.Header = new Header()
+            msg.Header = new Header();
+                
+            if (options.Durable.HasValue)
             {
-                Durable = options.Durable,
-            };
+                msg.Header.Durable = options.Durable.Value;
+            }
                 
             if (options.Priority.HasValue)
             {
