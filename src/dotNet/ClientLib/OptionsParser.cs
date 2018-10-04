@@ -241,8 +241,8 @@ namespace ClientLib
         public string ReplyTo { get; private set; }
         public string Subject { get; private set; }
         public bool Durable { get; private set; }
-        public uint Ttl { get; private set; }
-        public byte Priority { get; private set; }
+        public uint? Ttl { get; private set; }
+        public byte? Priority { get; private set; }
         public string CorrelationId { get; private set; }
         public byte[] UserId { get; private set; }
         public string MsgContentType { get; private set; }
@@ -285,8 +285,8 @@ namespace ClientLib
             this.ReplyTo = String.Empty;
             this.Subject = String.Empty;
             this.Durable = false;
-            this.Ttl = 0;
-            this.Priority = 0;
+            this.Ttl = null;
+            this.Priority = null;
             this.CorrelationId = String.Empty;
             this.UserId = null;
             this.MsgContentType = String.Empty;

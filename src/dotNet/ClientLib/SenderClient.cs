@@ -91,10 +91,17 @@ namespace ClientLib
             msg.Header = new Header()
             {
                 Durable = options.Durable,
-                Priority = options.Priority
             };
-            if (options.Ttl > 0)
-                msg.Header.Ttl = options.Ttl;
+                
+            if (options.Priority.HasValue)
+            {
+                msg.Header.Priority = options.Priority.Value;
+            }
+
+            if (options.Ttl.HasValue)
+            {
+                msg.Header.Ttl = options.Ttl.Value;
+            }
 
             //set up application properties
             if (options.Properties.Count > 0)

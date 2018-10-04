@@ -444,21 +444,6 @@ namespace ClientLib
         }
 
         /// <summary>
-        /// Format priority
-        /// </summary>
-        /// <param name="inData">byte</param>
-        /// <returns>string</returns>
-        public static string FormatPriority(byte inData)
-        {
-            string strData = inData.ToString();
-            if (inData == 0)
-            {
-                strData = Formatter.None;
-            }
-            return strData;
-        }
-
-        /// <summary>
         /// Format TTL so that no TTL present is printed as a 0
         /// </summary>
         /// <param name="inData">uint</param>
