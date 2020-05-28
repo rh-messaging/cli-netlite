@@ -38,7 +38,7 @@ namespace NetCoreClientUnitTest
         {
             return System.IO.Path.Combine(new String[] {
                 "/src/dotNetCore/",
-                client + "/bin/Debug/netcoreapp3.0",
+                client + "/bin/Debug/netcoreapp3.1",
                 "cli-netlite-core-" + client.ToLower().Replace("netcore", "") + ".dll" });
         }
 
