@@ -104,8 +104,9 @@ namespace ClientLib
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
-            msgDict.Add("creation-time", msg.Properties.CreationTime.Ticks);
-            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime.Ticks);
+            /// from epoch time conversion
+            msgDict.Add("creation-time", (msg.Properties.CreationTime.ToUniversalTime().Ticks - 621355968000000000) / 10000);
+            msgDict.Add("absolute-expiry-time", msg.Properties.AbsoluteExpiryTime.ToUniversalTime().Ticks - 621355968000000000) / 10000);
             msgDict.Add("content-encoding", msg.Properties.ContentEncoding);
             msgDict.Add("content-type", msg.Properties.ContentType);
             msgDict.Add("correlation-id", RemoveIDPrefix(msg.Properties.CorrelationId));
