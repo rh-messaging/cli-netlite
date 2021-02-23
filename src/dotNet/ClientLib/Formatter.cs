@@ -104,9 +104,8 @@ namespace ClientLib
             msgDict.Add("address", msg.Properties.To);
             msgDict.Add("reply-to", msg.Properties.ReplyTo);
             msgDict.Add("subject", msg.Properties.Subject);
-            /// from epoch time conversion
-            msgDict.Add("creation-time", (msg.Properties.CreationTime.ToUniversalTime().Ticks - 621355968000000000) / 10000);
-            msgDict.Add("absolute-expiry-time", (msg.Properties.AbsoluteExpiryTime.ToUniversalTime().Ticks - 621355968000000000) / 10000);
+            msgDict.Add("creation-time", FormatTicks(msg.Properties.CreationTime.ToUniversalTime().Ticks)
+            msgDict.Add("absolute-expiry-time", FormatTicks(msg.Properties.AbsoluteExpiryTime.ToUniversalTime().Ticks)
             msgDict.Add("content-encoding", msg.Properties.ContentEncoding);
             msgDict.Add("content-type", msg.Properties.ContentType);
             msgDict.Add("correlation-id", RemoveIDPrefix(msg.Properties.CorrelationId));
@@ -452,6 +451,16 @@ namespace ClientLib
         public static uint FormatTTL(uint inData)
         {
             return inData == uint.MaxValue ? 0 : inData;
+        }
+
+        /// <summary>
+        /// ticks to from epoch time conversion
+        /// </summary>
+        /// <param name="inData">uint</param>
+        /// <returns>epoch time</returns>
+        public static uint FormatTicks(uint inData)
+        {
+            return inData == 0 ? 0 : (inData  - 621355968000000000) / 10000;
         }
 
         /// <summary>
