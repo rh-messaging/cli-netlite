@@ -46,10 +46,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Amqp.Net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=905a7b1e6458e0c3">
-      <HintPath>..\..\..\packages\AMQPNetLite.2.4.0\lib\net45\Amqp.Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="../../../DLLs/Amqp.Net.dll" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
