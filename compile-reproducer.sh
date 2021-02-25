@@ -12,7 +12,7 @@ fi
 TARGET_DIR=$PWD/dist/tcpkeepalivesettings-reproducer
 REPRODUCER_DIR=$PWD/TcpKeepAliveSettings-reproducer/TcpKeepAliveSettings
 CLI_VER=$1
-CLI_BUILD=${3:-""}
+CLI_BUILD=${2:-""}
 
 if [[ "$CLI_BUILD" != "" ]]; then
 	CLI_BUILD=".$CLI_BUILD"
@@ -40,6 +40,9 @@ rm -f amq-clients-$CLI_VER-dotnet-core.zip
 
 # Copy AMQP.dll lib into the reproducers dir
 cp amq-clients-$CLI_VER-dotnet-core/bin/netstandard2.0/AMQP.dll $REPRODUCER_DIR
+
+# Delete dotnet core client
+rm -rf amq-clients-$CLI_VER-dotnet-core
 
 # Compile the files
 dotnet build -f netcoreapp3.1 $REPRODUCER_DIR/TcpKeepAliveSettings.csproj
