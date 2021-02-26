@@ -9,8 +9,8 @@ if [ $# -lt 1 ] || [[ "$@" = *"-h"* ]]; then
         exit 0
 fi
 
-TARGET_DIR=$PWD/dist/tcpkeepalivesettings-reproducer
-REPRODUCER_DIR=$PWD/TcpKeepAliveSettings-reproducer/TcpKeepAliveSettings
+TARGET_DIR=./dist/tcpkeepalivesettings-reproducer
+REPRODUCER_DIR=./TcpKeepAliveSettings-reproducer/TcpKeepAliveSettings
 CLI_VER=$1
 CLI_BUILD=${2:-""}
 
