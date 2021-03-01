@@ -25,9 +25,6 @@ mkdir -p $TARGET_DIR
 # Search and replace Package AMQPNetLite.Core with AMQP.dll
 sed -i 's/PackageReference Include="AMQPNetLite.Core" Version="2.3.0/Reference Include="AMQP.dll/g' $REPRODUCER_DIR/TcpKeepAliveSettings.csproj
 
-# Change directory
-cd $TARGET_DIR
-
 # Download dotnet core client
 if ! wget -q -t 10 "http://download-node-02.eng.bos.redhat.com/devel/candidates/amq/AMQ-CLIENTS-$CLI_VER$CLI_BUILD/amq-clients-$CLI_VER-dotnet-core.zip"; then
 	echo "Could not download dotnet-core client version"
