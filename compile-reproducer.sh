@@ -45,14 +45,17 @@ cp amq-clients-$CLI_VER-dotnet-core/bin/netstandard2.0/AMQP.dll $REPRODUCER_DIR
 rm -rf amq-clients-$CLI_VER-dotnet-core
 
 # Compile the files
-dotnet build -f netcoreapp3.1 $REPRODUCER_DIR/TcpKeepAliveSettings.csproj
+dotnet build -f netcoreapp3.1 -c Release $REPRODUCER_DIR/TcpKeepAliveSettings.csproj
+
+# Publish TcpKeepAliveSettings reproducer
+dotnet publish -f netcoreapp3.1 -c Release $REPRODUCER_DIR/TcpKeepAliveSettings.csproj
 
 # Create new zip file including all necessary bin files
 mkdir $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
-cp $REPRODUCER_DIR/bin/Debug/netcoreapp3.1/AMQP.dll $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
-cp $REPRODUCER_DIR/bin/Debug/netcoreapp3.1/TcpKeepAliveSettings $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
-cp $REPRODUCER_DIR/bin/Debug/netcoreapp3.1/TcpKeepAliveSettings.dll $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
-cp $REPRODUCER_DIR/bin/Debug/netcoreapp3.1/TcpKeepAliveSettings.runtimeconfig.json $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
+cp $REPRODUCER_DIR/bin/Release/netcoreapp3.1/AMQP.dll $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
+cp $REPRODUCER_DIR/bin/Release/netcoreapp3.1/TcpKeepAliveSettings $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
+cp $REPRODUCER_DIR/bin/Release/netcoreapp3.1/TcpKeepAliveSettings.dll $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
+cp $REPRODUCER_DIR/bin/Release/netcoreapp3.1/TcpKeepAliveSettings.runtimeconfig.json $TARGET_DIR/TcpKeepAliveSettings-reproducer-$CLI_VER
 cd $TARGET_DIR && zip -r TcpKeepAliveSettings-reproducer-$CLI_VER\.zip TcpKeepAliveSettings-reproducer-$CLI_VER
 
 # Generate checksums
