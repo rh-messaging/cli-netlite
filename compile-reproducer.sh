@@ -62,3 +62,4 @@ cd $TARGET_DIR && zip -r TcpKeepAliveSettings-reproducer-$CLI_VER\.zip TcpKeepAl
 # Upload to artifactory
 # curl --header "X-Checksum-MD5:${ARTIFACT_MD5_CHECKSUM}" --header "X-Checksum-Sha1:${ARTIFACT_SHA1_CHECKSUM}" -u anonymous: -X PUT "http://messaging-qe-repo.usersys.redhat.com:8081/artifactory/cli-netlite/reproducers/" -T "TcpKeepAliveSettings-reproducer-$CLI_VER.zip"
 curl -u anonymous: -X PUT "http://messaging-qe-repo.usersys.redhat.com:8081/artifactory/cli-netlite/reproducers/" -T "TcpKeepAliveSettings-reproducer-$CLI_VER.zip"
+
