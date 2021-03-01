@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="AMQP.dll" />
+      <Reference Include="../../DLLs/AMQP.dll" />
   </ItemGroup>
 
 </Project>
