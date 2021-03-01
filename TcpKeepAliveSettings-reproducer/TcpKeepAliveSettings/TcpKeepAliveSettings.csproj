@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AMQPNetLite.Core" Version="2.3.0" />
+    <Reference Include="AMQP.dll />
   </ItemGroup>
 
 </Project>
