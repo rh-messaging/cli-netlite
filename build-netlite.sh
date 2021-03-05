@@ -9,9 +9,9 @@ if [ $# -lt 1 ] || [[ "$@" = *"-h"* ]]; then
         exit 0                                                                                                             
 fi                                                                                                                         
                                                                                                                                                                                                   
-TARGET_DIR=./dist/netlite
 CLI_VER=$1                                                                                                                 
 CLI_BUILD=${2:-""}                                                                                                         
+TARGET_DIR=./dist/cli-netlite-$CLI_VER
                                                                                                                            
 if [[ "$CLI_BUILD" != "" ]]; then                                                                                          
     CLI_BUILD=".$CLI_BUILD"                                                                                                
@@ -22,8 +22,8 @@ rm -rf $TARGET_DIR
 mkdir -p $TARGET_DIR                                                                                                    
 
 # Install dependency packages
-# nuget install src/dotNet/ClientLib/packages.config -OutputDirectory packages
-# 
+nuget install src/dotNet/ClientLib/packages.config -OutputDirectory packages
+
 # # Build the projects
 # /cygdrive/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe /p:Configuration=Release /p:TargetFrameworkVersion=v4.7.2 src/dotNet/ClientLib/ClientLib.csproj
 # /cygdrive/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe /p:Configuration=Release /p:TargetFrameworkVersion=v4.7.2 src/dotNet/Connector/Connector.csproj
@@ -49,5 +49,5 @@ cp ./src/dotNet/Connector/bin/Release/cli-netlite-connector.exe $TARGET_DIR
 cp ./src/dotNet/Receiver/bin/Release/cli-netlite-receiver.exe $TARGET_DIR
 cp ./src/dotNet/Sender/bin/Release/cli-netlite-sender.exe $TARGET_DIR
 
-tar -cf cli-netlite-$CLI_VER.tar $TARGET_DIR
+cd dist && tar -cf cli-netlite-$CLI_VER.tar cli-netlite-$CLI_VER
 
