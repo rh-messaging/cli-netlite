@@ -1,23 +1,13 @@
 #!/bin/bash
 
-usage() {                                                                                                                  
-        echo "usage: $(basename "$0") [-h|--help] <clients_version>"                  
-}                                                                                                                          
-                                                                                                                           
-if [ $# -lt 1 ] || [[ "$@" = *"-h"* ]]; then                                                                               
-        usage                                                                                                              
-        exit 0                                                                                                             
-fi                                                                                                                         
-                                                                                                                                                                                                  
-CLI_VER=$1                                                                                                                 
-TARGET_DIR=./dist/cli-netlite-$CLI_VER
-                                                                                                                           
+TARGET_DIR=./dist/netlite
+
 # Create directory for finished product
 rm -rf $TARGET_DIR
 mkdir -p $TARGET_DIR                                                                                                    
 
-# Install dependency packages
-nuget install src/dotNet/ClientLib/packages.config -OutputDirectory packages
+# Restore dependency packages
+nuget restore src/dotNet/ClientLib/packages.config -PackagesDirectory packages
 
 # Build the projects
 /cygdrive/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe /p:Configuration=Release /p:TargetFrameworkVersion=v4.7.2 src/dotNet/ClientLib/ClientLib.csproj
@@ -32,6 +22,4 @@ cp ./src/dotNet/ClientLib/bin/Release/ClientLib.dll $TARGET_DIR
 cp ./src/dotNet/Connector/bin/Release/cli-netlite-connector.exe $TARGET_DIR
 cp ./src/dotNet/Receiver/bin/Release/cli-netlite-receiver.exe $TARGET_DIR
 cp ./src/dotNet/Sender/bin/Release/cli-netlite-sender.exe $TARGET_DIR
-
-cd dist && tar -cf cli-netlite-$CLI_VER.tar cli-netlite-$CLI_VER
 
