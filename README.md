@@ -9,13 +9,29 @@
 
 ## Compilation
 
-1. Clone repo on Windows system (ws2012r2, ws2012, win 8.1, win 10)
-1. Open `cli-netlite.sln` in Visual Studio and build it, or build using msbuild.exe in cmd
+### With .NET Core:
 
-## Installation
+1. Open a browser and log in to the Red Hat Customer Portal Product Downloads page at [access.redhat.com/downloads](https://access.redhat.com/downloads).
+2. Locate the Red Hat AMQ Clients entry in the INTEGRATION AND AUTOMATION category.
+3. Click Red Hat AMQ Clients. The Software Downloads page opens.
+4. Download latest AMQ Clients .NET Core .zip file and unzip it.
+5. Clone cli-netlite repo.
+6. Create `DLLs` folder inside cli-netlite repo.
+7. Locate `AMQP.dll` file inside unzipped .NET Core client and copy it inside DLLs folder.
+8. Run `build-netcore.sh`.
+9. Built binary files are located inside `dist/netcore`.
 
-1. Download cli-netlite-[version].msi from releases
-2. Install cli-netlite-[version].msi
+### With .NET Framework:
+
+1. Open a browser and log in to the Red Hat Customer Portal Product Downloads page at [access.redhat.com/downloads](https://access.redhat.com/downloads).
+2. Locate the Red Hat AMQ Clients entry in the INTEGRATION AND AUTOMATION category.
+3. Click Red Hat AMQ Clients. The Software Downloads page opens.
+4. Download latest AMQ Clients .NET .zip file and unzip it.
+5. Clone cli-netlite repo.
+6. Create `DLLs` folder inside cli-netlite repo.
+7. Locate `Amqp.net.dll` file inside unzipped .NET client and copy it inside DLLs folder.
+8. Run `build-netlite.sh`.
+9. Built binary files are located inside `dist/netlite`.
 
 ## Using
 
