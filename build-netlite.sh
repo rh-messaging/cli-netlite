@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -Exeuo pipefail
+                                                                                                                           
 TARGET_DIR=./dist/netlite
 
 # Create directory for finished product
@@ -7,7 +9,7 @@ rm -rf $TARGET_DIR
 mkdir -p $TARGET_DIR                                                                                                    
 
 # Restore dependency packages
-nuget restore src/dotNet/ClientLib/packages.config -PackagesDirectory packages
+/cygdrive/c/tools/nuget.exe restore src/dotNet/ClientLib/packages.config -PackagesDirectory packages
 
 # Build the projects
 /cygdrive/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe /p:Configuration=Release /p:TargetFrameworkVersion=v4.7.2 src/dotNet/ClientLib/ClientLib.csproj

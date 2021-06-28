@@ -1,4 +1,5 @@
 #!/bin/bash                                                                                                               
+
 set -Exeuo pipefail
                                                                                                                            
 TARGET_DIR=./dist/netcore
