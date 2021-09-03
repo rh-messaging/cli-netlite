@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -Eeuxo pipefail
-
 TARGET_DIR=./dist/netlite
 
 # Create directory for finished product
