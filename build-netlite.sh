@@ -1,12 +1,12 @@
 #!/bin/bash
 
-set -Exeuo pipefail
+set -Eeuxo pipefail
 
 TARGET_DIR=./dist/netlite
 
 # Create directory for finished product
 rm -rf $TARGET_DIR
-mkdir -p $TARGET_DIR                                                                                                    
+mkdir -p $TARGET_DIR
 
 # Restore dependency packages
 /cygdrive/c/tools/nuget.exe restore src/dotNet/ClientLib/packages.config -PackagesDirectory packages
@@ -24,3 +24,4 @@ cp ./src/dotNet/ClientLib/bin/Release/ClientLib.dll $TARGET_DIR
 cp ./src/dotNet/Connector/bin/Release/cli-netlite-connector.exe $TARGET_DIR
 cp ./src/dotNet/Receiver/bin/Release/cli-netlite-receiver.exe $TARGET_DIR
 cp ./src/dotNet/Sender/bin/Release/cli-netlite-sender.exe $TARGET_DIR
+
