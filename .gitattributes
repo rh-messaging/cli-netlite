@@ -3,4 +3,5 @@
 
 # Declare files that will always have fixed line endings on checkout.
 *.bat text eof=crlf
+*.sh text eol=lf
 
