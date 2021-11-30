@@ -1,23 +1,40 @@
 # README #
+
 [![Build Status](https://travis-ci.org/rh-messaging/cli-netlite.svg?branch=master)](https://travis-ci.org/rh-messaging/cli-netlite)
 
-
-
-## Description
+## Description ##
 
 * This is console based amqp client builded on [AMQP.NET lite library](https://github.com/Azure/amqpnetlite)
 
-## Compilation
+## Compilation ##
 
-1. Clone repo on Windows system (ws2012r2, ws2012, win 8.1, win 10)
-1. Open `cli-netlite.sln` in Visual Studio and build it, or build using msbuild.exe in cmd
+Cygwin environment is recommended for compilation on Windows machines.
 
-## Installation
+### With .NET Core ###
 
-1. Download cli-netlite-[version].msi from releases
-2. Install cli-netlite-[version].msi
+1. Open a browser and log in to the Red Hat Customer Portal Product Downloads page at [access.redhat.com/downloads](https://access.redhat.com/downloads).
+2. Locate the Red Hat AMQ Clients entry in the INTEGRATION AND AUTOMATION category.
+3. Click Red Hat AMQ Clients. The Software Downloads page opens.
+4. Download latest AMQ Clients .NET Core .zip file and unzip it.
+5. Clone cli-netlite repo.
+6. Create `DLLs` folder inside cli-netlite repo.
+7. Locate `AMQP.dll` file inside unzipped .NET Core client and copy it inside DLLs folder.
+8. Run `build-netcore.sh`.
+9. Built binary files are located inside `dist/netcore`.
 
-## Using
+### With .NET Framework ###
+
+1. Open a browser and log in to the Red Hat Customer Portal Product Downloads page at [access.redhat.com/downloads](https://access.redhat.com/downloads).
+2. Locate the Red Hat AMQ Clients entry in the INTEGRATION AND AUTOMATION category.
+3. Click Red Hat AMQ Clients. The Software Downloads page opens.
+4. Download latest AMQ Clients .NET .zip file and unzip it.
+5. Clone cli-netlite repo.
+6. Create `DLLs` folder inside cli-netlite repo.
+7. Locate `Amqp.net.dll` file inside unzipped .NET client and copy it inside DLLs folder.
+8. Run `build-netlite.sh`
+9. Built binary files are located inside `dist/netlite`.
+
+## Using ##
 
 Using cmd client
 
@@ -26,10 +43,10 @@ Using cmd client
 > cli-netlite-receiver.exe --broker "username:password@localhost:5672" --address "queue_test" --count 2 --log-msgs dict
 ```
 
-## Contributors
+## Contributors ##
 
 * David Kornel <david.kornel@outook.com>, <dkornel@redhat.com>
 
-## License
+## License ##
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
