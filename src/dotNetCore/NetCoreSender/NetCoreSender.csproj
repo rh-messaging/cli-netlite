@@ -6,6 +6,7 @@
     <AssemblyName>cli-netlite-core-sender</AssemblyName>
     <Version>2.0.1</Version>
     <RuntimeIdentifiers>win7-x64;ubuntu.16.10-x64;osx.10.12-x64;rhel.7-x64</RuntimeIdentifiers>
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <ItemGroup>
